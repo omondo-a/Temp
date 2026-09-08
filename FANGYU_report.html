@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>吠陀占星完整解讀 — Client</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600&family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --parchment: #f8f4ec; --parchment-deep: #f0eadb;
+  --brown: #5a4636; --brown-light: #7a6652; --brown-muted: #9c8b7a;
+  --gold: #b59540; --gold-soft: #d4c07a; --gold-line: #c9a94e;
+  --text: #3d352c; --text-light: #5a4e42; --text-muted: #8a7d70;
+  --border: #ddd3c2; --border-light: #e8e0d2;
+  --table-head-bg: #ede6d8; --table-stripe: #f4efe5;
+}
+@page { size: A4; margin: 22mm 20mm 24mm 20mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "PingFang TC", "Microsoft JhengHei", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+  font-size: 14px; line-height: 1.85; color: var(--text);
+  background: #e8e0d0;
+  max-width: 780px; margin: 0 auto; padding: 48px 56px;
+  background: var(--parchment);
+  box-shadow: 0 1px 30px rgba(74,55,40,0.1);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+@media print {
+  body { background: var(--parchment); box-shadow: none; padding: 0; max-width: none; font-size: 10.5pt; }
+  .no-print { display: none; }
+  .section-header, thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  table { font-size: 8pt !important; }
+}
+.cover {
+  page-break-after: always; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  position: relative; padding: 80px 20px 60px; text-align: center;
+}
+.cover-top {
+  color: var(--gold); font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px;
+}
+.cover h1 {
+  font-family: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif SC", "Songti SC", serif;
+  font-size: 52px; font-weight: 700;
+  color: var(--brown); line-height: 1.3; margin-bottom: 6px;
+  border-bottom: none; padding-bottom: 0;
+}
+.cover .cover-accent {
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", serif;
+  font-size: 28px; font-weight: 400; color: var(--gold);
+  letter-spacing: 6px; margin-bottom: 12px;
+}
+.cover .cover-nick {
+  display: inline-block; margin: 6px 0 4px; padding: 7px 24px;
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", serif;
+  font-size: 24px; font-weight: 600; letter-spacing: 3px;
+  color: var(--brown); background: var(--parchment-deep);
+  border: 1px solid var(--gold-line); border-radius: 999px;
+}
+.cover .cover-ornament {
+  width: 60px; height: 1px; background: var(--gold-line); margin: 28px auto;
+}
+.cover .subtitle {
+  font-size: 14px; color: var(--text-muted); font-weight: 400;
+  letter-spacing: 1px; margin-bottom: 0;
+}
+.cover-meta {
+  margin-top: auto; padding-top: 0; width: 100%; text-align: left;
+  border-top: 1px solid var(--border-light); padding-top: 24px;
+}
+.cover-meta-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px 40px;
+  font-size: 12px; color: var(--text-muted);
+}
+.cover-meta-grid div { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; }
+.cover-meta-grid dt { font-weight: 500; color: var(--brown-muted); font-size: 11px; min-width: 55px; flex-shrink: 0; }
+.cover-meta-grid dd { margin: 0; color: var(--text-light); }
+.toc { page-break-after: always; padding: 40px 0; }
+.toc h2 {
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", serif; font-size: 22px; color: var(--brown);
+  margin-bottom: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+.toc-list { list-style: none; }
+.toc-list li {
+  padding: 8px 0; border-bottom: 1px dashed var(--border-light);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 14px;
+}
+.toc-section { font-weight: 500; color: var(--brown); }
+.toc-list li.toc-part {
+  background: var(--parchment-deep); color: var(--brown); padding: 10px 16px;
+  margin: 4px -16px; border-radius: 3px; border: none; border-bottom: none;
+  font-weight: 600; font-size: 14px;
+}
+.section { page-break-before: always; }
+.section:first-of-type { page-break-before: auto; }
+.section-header {
+  border-left: 3px solid var(--gold-line);
+  color: var(--brown); padding: 12px 22px; margin: 0 0 28px;
+}
+.section-header .section-number {
+  color: var(--gold); font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+}
+.section-header h2 {
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", serif; font-size: 21px; font-weight: 700;
+  margin-top: 2px; border: none; color: var(--brown) !important; padding-bottom: 0;
+}
+h1 {
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", "Crimson Pro", serif; font-size: 22px; color: var(--brown);
+  margin: 32px 0 14px; font-weight: 600;
+}
+h2 {
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", "Crimson Pro", serif; font-size: 18px; color: var(--brown);
+  margin: 28px 0 12px; font-weight: 600;
+}
+h3 {
+  font-size: 15px; font-weight: 600; color: var(--brown);
+  margin: 22px 0 8px; padding-left: 10px;
+  border-left: 2px solid var(--gold-line);
+}
+h4 { font-size: 14px; font-weight: 600; color: var(--brown-light); margin: 16px 0 6px; }
+p { margin: 0 0 12px; text-align: justify; }
+table {
+  width: 100%; border-collapse: collapse; margin: 10px 0 20px;
+  font-size: 12px; line-height: 1.5;
+}
+thead th {
+  background: var(--table-head-bg); color: var(--brown);
+  padding: 7px 10px; text-align: left;
+  font-weight: 600; font-size: 11px;
+  border-bottom: 1.5px solid var(--gold-line);
+}
+tbody td { padding: 6px 10px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+tbody tr:nth-child(even) { background: var(--table-stripe); }
+table:has(th:nth-child(10)) { font-size: 10px; }
+table:has(th:nth-child(10)) th,
+table:has(th:nth-child(10)) td { padding: 4px 3px; text-align: center; white-space: nowrap; }
+table:has(th:nth-child(10)) th:first-child,
+table:has(th:nth-child(10)) td:first-child { text-align: left; font-weight: 600; }
+blockquote {
+  border-left: 2px solid var(--gold-line);
+  background: var(--parchment-deep);
+  padding: 10px 16px; margin: 14px 0; border-radius: 0 3px 3px 0;
+  color: var(--text-light); font-size: 13px;
+}
+blockquote strong { color: var(--brown); font-style: normal; }
+ul, ol { margin: 6px 0 14px 22px; }
+li { margin-bottom: 3px; }
+strong { color: var(--brown); }
+code {
+  background: var(--parchment-deep); padding: 1px 4px; border-radius: 2px;
+  font-size: 12px; color: var(--brown-light);
+  font-family: 'Inter', monospace;
+}
+pre {
+  background: #3d352c; color: #ede6d8; padding: 14px 18px; border-radius: 4px;
+  margin: 14px 0; font-size: 11px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap;
+}
+pre code { background: transparent; border: none; color: inherit; padding: 0; }
+hr { border: none; border-top: 1px dashed var(--border-light); margin: 24px 0; }
+.page-break { page-break-before: always; }
+.footer-note {
+  margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--border-light);
+  font-size: 10px; color: var(--text-muted); text-align: center;
+}
+</style></head>
+<body>
+<div class="cover">
+  <div class="cover-top">資料驅動吠陀占星</div>
+  <h1>吠陀占星</h1>
+  <div class="cover-accent">完 整 解 讀</div>
+  <div class="cover-nick">🐢 小龜</div>
+  <div class="cover-ornament"></div>
+  <div class="subtitle">開源版 | 核心 完整報告</div>
+  <div class="cover-meta"><div class="cover-meta-grid">
+    <div><dt>綽號</dt><dd>小龜</dd></div>
+    <div><dt>上升</dt><dd>雙子座 Gemini</dd></div>
+    <div><dt>出生</dt><dd>1994-03-30 11:17 · 台北</dd></div>
+    <div><dt>命主星</dt><dd>水星（第9宮 · 水瓶座）</dd></div>
+    <div><dt>體系</dt><dd>Parashari Jyotish · KN Rao School</dd></div>
+    <div><dt>曆算</dt><dd>True Chitrapaksha（Lahiri系）</dd></div>
+    <div><dt>大運</dt><dd>Vimsottari（當前：水星大運）</dd></div>
+    <div><dt>量化</dt><dd>Shadbala · Ashtakavarga · D9</dd></div>
+  </div></div>
+</div><div class="toc"><h2>目錄</h2><ul class="toc-list"><li class="toc-part">第一部分：身份概覽</li><li class="toc-part">第二部分A：行星審計（日/月）</li><li class="toc-part">第二部分B：行星審計（火/水）</li><li class="toc-part">第二部分C：行星審計（木/金）</li><li class="toc-part">第二部分D：行星審計（土/羅/計 ＋ 總結）</li><li class="toc-part">第三部分A：D9盤深度審計</li><li class="toc-part">第三部分B：分盤交叉分析</li><li class="toc-part">第四部分A：宮位診斷（1-6宮）</li><li class="toc-part">第四部分B：宮位診斷（7-12宮）</li><li class="toc-part">第五部分：人生架構總結</li><li class="toc-part">第五部分（續）：人生架構總結</li><li class="toc-part">附錄：技術附錄</li></ul></div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 01</div>
+    <h2>第一部分：身份概覽</h2>
+  </div>
+  <h1>你的星盤總綱（先看這一頁，掌握全局）</h1>
+<blockquote>
+<p><strong>分析範圍</strong>：本命盤 P1–P12 行星審計、D9/D10/D4/D5 分盤交叉、十二宮位、十大人生板塊、格局與大運時間線。
+<strong>出生時間精度</strong>：精確到分鐘（來源：未追問；有效精度 ±分鐘級）。
+<strong>盤面初驗</strong>：計算引擎精算結果與你提供的命盤逐項比對——上升、九大行星星座宮位度數、逆行、分盤全部吻合；十二項自動校驗全數通過（SAV 總和=337）。
+<strong>資料來源</strong>：vedic-calculator 直接天文計算（Swiss Ephemeris + PyJHora 原生大運）。</p>
+</blockquote>
+<hr />
+<h2>五項可信度分別記錄（不合併成單一分數）</h2>
+<table>
+<thead>
+<tr>
+<th>面向</th>
+<th>評級</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 計算可信度</td>
+<td>高</td>
+<td>天文計算與你的命盤逐項吻合，12 項校驗全過</td>
+</tr>
+<tr>
+<td>2. 結構解釋可信度</td>
+<td>高</td>
+<td>D1、宮主、卡拉卡（Karaka，人生領域的指示星）、格局收斂一致</td>
+</tr>
+<tr>
+<td>3. 事件形態可信度</td>
+<td>中高</td>
+<td>領域方向清晰；具體事件保留正反雙證</td>
+</tr>
+<tr>
+<td>4. 時間分辨率</td>
+<td>大運×小運（可下鑽三級運到月級）</td>
+<td>有 Chara Dasha 第二系統可交叉驗證</td>
+</tr>
+<tr>
+<td>5. 外部驗證狀態</td>
+<td>未做獨立盲測</td>
+<td>本報告為純盤面推導，未回溯個人事件</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ 兩張分盤（D10 事業盤、D4 家產盤）在你出生時間前後 ±1 分鐘內會跨星座（邊界敏感）。凡引用這兩張盤，結論一律留餘地、分情境寫，不當定論。D9（婚姻／內在盤）、D5（權力盤）穩定。</p>
+</blockquote>
+<hr />
+<h2>一、你是誰：舞台與主角</h2>
+<p><strong>你的上升星座是雙子座（Gemini）</strong>——上升代表你這一生站上的「舞台基調」，就是你面對世界的方式、你的身體與個性外殼。雙子座這個舞台的關鍵詞是：<strong>好奇、靈活、擅長溝通與資訊、多工、喜歡新鮮、閒不下來、用腦袋而不是用蠻力過日子</strong>。你天生就是一個「資訊處理器」型的人，靠腦子、靠嘴、靠一雙手吃飯。</p>
+<p><strong>你這盤的主角（命主星）是水星（Mercury，代表：溝通表達、思考邏輯、商業買賣、文書與技能、學習、雙手與神經）。</strong> 它現在站在<strong>第9宮（代表：運氣福報、貴人與老師、父親、遠方與出國、信仰、高等教育）的水瓶座</strong>上。用一句話說：<strong>你這盤的主角，是一個靠頭腦與溝通吃飯的人，而他站的位置是「求知、遠方、貴人、高等學問」的舞台。</strong> 你的人生劇本天生就跟「學習、跑遠、遇貴人、把知識變成本事」綁在一起。水星狀態一般（客居在水瓶座這個不算主場的環境、力量指數 98.7%），詳細體檢留在後面。</p>
+<hr />
+<h2>二、你的內心底色：月亮</h2>
+<p><strong>月亮（代表：內心情緒、母親、日常心理、大眾、照顧）落在天秤座、第5宮（代表：戀愛、子女、才華創意、玩樂、學習）。</strong> 你內心深處是個<strong>重關係、愛和諧、怕衝突、享受美好事物、有創作與玩樂慾望</strong>的人。</p>
+<p>你出生時是<strong>虧月（月亮漸虧）</strong>——照吠陀的合成規則，這代表你的情緒「續航力偏弱」：<strong>來得快、去得也快，不容易長時間沉溺在一種情緒裡</strong>（不是「內向話少」，而是「翻頁快」）。天秤是風象，所以你情緒的外顯方式其實是偏「向外講、想找人討論、想維持表面和諧」的。</p>
+<hr />
+<h2>三、你現在站在人生的哪個階段</h2>
+<p><strong>你現在正走在「水星大運」（2025年6月起，共17年，約到2042年、涵蓋你 31 至 48 歲的人生黃金段）。</strong> 水星正是你的命主星——所以這 17 年的主軸，本質上是<strong>「你自己親自掌舵、靠腦袋和溝通去換成果」的一段路</strong>。</p>
+<p>但要老實說：水星這台引擎「跑得有點熱」——它在水瓶座是客居（不是主場），力量差一點點到及格線（98.7%），而且旁邊緊貼著火星（代表競爭、衝勁、爭執）。所以這 17 年不是「躺著收成」的順風局，而是<strong>「要靠自己拼、過程帶點競爭與急躁摩擦、拼了才有」的磨練型主場</strong>。目前更細的小運是水星—水星（2025年6月至2027年11月），等於「純水星能量」——最適合把個人專業、表達、學習、商業這幾件事往前推。</p>
+<hr />
+<h2>四、九星力量一覽表</h2>
+<table>
+<thead>
+<tr>
+<th>排名</th>
+<th>行星</th>
+<th>力量（Shadbala）</th>
+<th>狀態速覽</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>太陽 Sun</td>
+<td>201.6%</td>
+<td><strong>全盤最強</strong>，狀態極旺，落事業宮（10宮）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>金星 Venus</td>
+<td>138.5%</td>
+<td>強，友方位，D9 同座加持（Vargottama）</td>
+</tr>
+<tr>
+<td>3</td>
+<td>土星 Saturn</td>
+<td>115.2%</td>
+<td>強，<strong>入自己的家（自廟）＋ D9 同座加持</strong>，最穩的底盤</td>
+</tr>
+<tr>
+<td>4</td>
+<td>火星 Mars</td>
+<td>99.6%</td>
+<td>中偏弱，客居敵方位</td>
+</tr>
+<tr>
+<td>5</td>
+<td>水星 Mercury</td>
+<td>98.7%</td>
+<td>中偏弱，命主星，客居敵方位</td>
+</tr>
+<tr>
+<td>6</td>
+<td>木星 Jupiter</td>
+<td>93.8%</td>
+<td>偏弱，逆行＋死敵位，是本盤最需留意的短板</td>
+</tr>
+<tr>
+<td>7</td>
+<td>月亮 Moon</td>
+<td>93.0%</td>
+<td>偏弱，客居敵方位（虧月）</td>
+</tr>
+<tr>
+<td>—</td>
+<td>羅睺 Rahu</td>
+<td>—（節點無力量分）</td>
+<td>落6宮，定位星是火星</td>
+</tr>
+<tr>
+<td>—</td>
+<td>計都 Ketu</td>
+<td>—（節點無力量分）</td>
+<td>落12宮，定位星是金星</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一句話定調：你全盤最強的一張牌是太陽（父親／老闆／名聲／自我核心，落在事業宮），最需要照顧的短板是木星（智慧／貴人／擴張／丈夫或子女象徵，逆行又客居死敵位）。</strong> 太陽這麼強、又坐在事業與社會地位的宮位，是你這張盤最大的先天資本——這條線我們會在事業板塊重點展開。</p>
+<hr />
+<blockquote>
+<p>接下來我會逐顆星幫你做「體檢」：看每顆星在你人生裡扮演什麼角色、狀態好不好、管的事情順不順。先講結論、講白話，數據表附在後面給你對照。</p>
+</blockquote>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 02</div>
+    <h2>第二部分A：行星審計（日/月）</h2>
+  </div>
+  <h1>行星逐顆體檢（第一組：太陽、月亮）</h1>
+<h2>開場：格局預掃結果（先看你天生帶了哪些「加分牌」）</h2>
+<p>在逐顆體檢之前，我先把全盤掃一遍，看看你天生有哪些「格局」（幾顆星特定排列組合，會形成一種先天加持或課題）。以計算引擎的結構核驗為準：</p>
+<p><strong>✅ 已確認成立的格局：</strong>
+- <strong>王者格局（Raja Yoga）</strong>——命中 4 組「三角宮主 × 角宮主」的連結。這代表你天生帶有「取得地位、影響力、被人看重」的通道。最典型的一組是：<strong>金星（管第5宮才華戀愛）與木星（管第7宮婚姻、第10宮事業）互相對看</strong>，把「才華」和「事業地位」接在一起。品質好壞要等金星、木星體檢完再定。
+- <strong>象王格局（Gajakesari Yoga）</strong>——木星（智慧、貴人）與月亮（情緒、心思）同落第5宮。這代表<strong>學習力、悟性、把知識與情感結合的能力</strong>是你的天賦線。（木星偏弱會打折，後面說。）
+- <strong>輔弼格局（Adhi Yoga，弱成立）</strong>——吉星金星落在「從月亮起算的第10–12宮」，但夾雜了一點凶星能量，所以是弱成立。代表你有一定的「受人輔佐、得力於旁人」的底子。</p>
+<p><strong>待驗證（參與星體檢後定案）：</strong> 王者格局的兌現品質（卡在木星偏弱）、輔弼格局的實際強度。</p>
+<p><strong>落陷星補救狀態：</strong> 本盤<strong>沒有落陷（故障級）的行星</strong>。木星雖然狀態最差，但它是「死敵位」（客居很不友善的環境、偏弱但能量沒有反轉），不等於落陷，因此不需要走落陷補救。</p>
+<p><strong>月亮孤獨格局（Kemadruma）：不成立（已解除）</strong>——這是好消息，代表你內心不是那種天生孤立無援的底色，月亮身邊有木星陪伴、又受照拂，情感支持系統天生就有。</p>
+<hr />
+<p>——— 太陽（Sun）：站在人生最高舞台上、自帶聚光燈的那張王牌 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>先講它管你什麼事。<strong>太陽在你盤裡管第3宮（代表：溝通表達、勇氣膽識、動手的技能、兄弟姊妹、短程移動、自媒體與內容）</strong>，而它本人站在<strong>第10宮（代表：事業、社會地位、名聲、老闆、公眾成就）的雙魚座</strong>上。把這兩件事連起來就是一句話：<strong>你「靠自己主動出擊、靠溝通與一技之長去闖」的那股勁，會直接變成你的事業和名聲。</strong> 你不是那種靠關係躺著上位的人，你是靠「自己動手、自己開口、自己往前衝」把位置一點一點掙出來的人。</p>
+<p>再講它狀態。這是<strong>你全盤最強的一顆星（力量指數 201.6%，排名第一）</strong>，而且它剛好落在自己「主場作戰」的位置——太陽天生就在第10宮（事業宮）發揮最強，你正好把它放在這裡，等於一台頂級引擎裝在最對的車架上。它給出的「福果」數值很高、「苦果」數值很低，白話說就是：<strong>這顆星帶給你的多半是實實在在的好處，而不是苦頭。</strong> 太陽同時代表父親、老闆、政府體制、權威人物——放在事業宮又這麼強，意味著兩件事：一是「權威、上司、體制、你父親」這條線在你的公眾人生裡份量很重；二是<strong>你自己有成為某個領域「權威、被看見的那個人」的底子。</strong></p>
+<p>那對當下和未來意味著什麼？太陽現在正值「青壯期」（15度，最有行動力的階段）。雖然現在走的是水星大運（不是太陽大運），但太陽這張底牌是「常駐加持」——它讓你在任何需要露臉、需要拍板、需要扛招牌、需要靠專業說話的場合，天生就比別人有底氣。你要善用的，就是「把自己往台前放」的機會：能掛名的別躲在幕後、能發聲的別悶著。你這顆星最怕的，是被你自己藏起來。</p>
+<p>【關鍵數據】</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>值</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>角色</td>
+<td>成長型競爭者（3宮主）</td>
+<td>靠自己主動出擊、溝通與技能去闖</td>
+</tr>
+<tr>
+<td>健康</td>
+<td>正常（不燃燒、不逆行）</td>
+<td>引擎乾淨、沒有雜訊</td>
+</tr>
+<tr>
+<td>尊貴</td>
+<td>中性（雙魚座）</td>
+<td>環境不特別幫、也不掣肘</td>
+</tr>
+<tr>
+<td>方向力</td>
+<td>落10宮＝主場（Dig Bala 滿分）</td>
+<td>太陽天生在事業宮最強，你正好放這</td>
+</tr>
+<tr>
+<td>力量</td>
+<td>Shadbala 201.6%</td>
+<td>全盤最強，遠超其他星</td>
+</tr>
+<tr>
+<td>年齡</td>
+<td>青壯期（15°）</td>
+<td>最有行動力的階段</td>
+</tr>
+</tbody>
+</table>
+<p>【推演邏輯】太陽這顆星的四個關鍵（角色是「靠自己闖的競爭者」、落在最高的事業舞台、拿到主場滿分、力量全盤第一）全部指向同一個結論：<strong>你的事業與名聲是靠「自我驅動＋公開露臉＋一技之長」建立起來的，而且這條路你走得動、走得亮。</strong> 這不是「有沒有機會」的問題，是「你敢不敢站到台前」的問題。</p>
+<p>【特別提醒】無欺騙性風險、無高壓紅利標籤（太陽在這裡是乾淨的強）。參與王者格局的能量場（太陽雖非直接構成星，但它坐鎮事業宮，替整個地位線加分）。</p>
+<p>【置信度】：<strong>高</strong>——所有參數方向一致，無矛盾信號。</p>
+<hr />
+<p>——— 月亮（Moon）：重關係、翻頁快、把才華和心情綁在一起的內心引擎 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>先講它管你什麼事。<strong>月亮在你盤裡管第2宮（代表：金錢存款、家庭、說話與飲食、累積的資產）</strong>，而它本人落在<strong>第5宮（代表：戀愛、子女、才華創意、玩樂、投機、智力學習）的天秤座</strong>。連起來看：<strong>你的「錢與家」跟你的「才華、戀愛、創作、玩樂」是綁在一條線上的</strong>——你很可能是靠「有創意的、討人喜歡的、跟人有關的」東西來累積財富與安全感，而不是靠死板的勞力。月亮又代表你的母親與內心情緒，所以你的內在安定感，很吃「有沒有在做喜歡的事、關係和不和諧」這件事。</p>
+<p>再講它狀態，這裡要對你老實說。月亮是<strong>你這 7 顆主星裡力量最弱的一顆（93%，排名最後）</strong>，而且它客居在天秤座這個「不算主場」的環境。加上你出生時是<strong>虧月（月亮漸虧）</strong>——照吠陀的規則，這代表你的情緒「續航力偏弱」：<strong>來得快、去得也快，不容易長時間卡在同一種情緒裡</strong>（這不是壞事，反而讓你不太記仇、翻頁快；但要留意的是「熱情也容易來得快去得快」，需要外在節奏幫你穩住）。天秤是風象，所以你情緒的表達其實偏「向外講、想找人討論、想維持表面和諧」，不是悶葫蘆。好消息是它落在一個「滋養保護點」（Pushkara Bhaga）上——這給了它一層恢復力緩衝，<strong>跌倒了比較容易回血</strong>。</p>
+<p>那對你的人生意味著什麼？特別要點出一件事：<strong>月亮同時是你的「事業指示星」（AmK，這套體系裡代表事業與行動方向的關鍵指示星）。</strong> 它落在第5宮又偏弱，這給了一個明確的方向訊號：<strong>你的事業天生帶有「第5宮的味道」——創意、才智、教學、投機／投資、跟小孩或年輕人有關、跟娛樂或討喜的內容有關</strong>；但因為指示星本身偏弱，這條路需要「外在結構」和「你主動經營」來撐，不會自己長出來。再加上月亮和木星同宮（象王格局），你的「學習力＋把情感和智慧結合的能力」是真的有底子的。</p>
+<p>【關鍵數據】</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>值</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>角色</td>
+<td>交易者（2宮主）＋事業指示星（AmK）</td>
+<td>錢與家的管理者，也是事業方向的關鍵指示</td>
+</tr>
+<tr>
+<td>健康</td>
+<td>虧月（續航弱、翻頁快）＋落在滋養保護點</td>
+<td>情緒來去快、但恢復力有緩衝</td>
+</tr>
+<tr>
+<td>尊貴</td>
+<td>敵方（天秤座）</td>
+<td>客居他鄉，環境不太幫忙</td>
+</tr>
+<tr>
+<td>力量</td>
+<td>Shadbala 93.0%</td>
+<td>七顆主星裡最弱</td>
+</tr>
+<tr>
+<td>落點</td>
+<td>第5宮（才華/戀愛/創意）＝吉路</td>
+<td>位置是好的，環境加分</td>
+</tr>
+<tr>
+<td>格局</td>
+<td>與木星同宮＝象王格局</td>
+<td>學習力、悟性的天賦線</td>
+</tr>
+</tbody>
+</table>
+<p>【推演邏輯】月亮的訊號是「方向好、位置好，但引擎本身偏弱」：它把你的財富與內心，接到了「才華、創意、戀愛、子女」這個討喜的領域（第5宮是吉路，環境加分），又是你的事業指示星——所以<strong>你的財路與事業，天生偏向「靠腦子和魅力、靠有創意的東西」</strong>。但月亮偏弱、虧月續航短，代表這條路的關鍵不在天賦夠不夠，而在<strong>「你有沒有幫自己建立穩定的節奏與外在支持」</strong>——熱情容易來去，需要制度幫你把它固定下來。</p>
+<p>【特別提醒】卡拉卡（Karaka）方向鐵律：AmK＝月亮指向「第5宮創意型事業」是「方向」，月亮偏弱是「執行難度」——方向不因引擎弱而改變，只是路上會顛。象王格局參與星（與木星），品質待木星體檢後定。</p>
+<p>【置信度】：<strong>中</strong>——方向與位置一致偏吉，但引擎偏弱＋虧月是明確的制約信號，屬「方向對、需經營」。</p>
+<p>=== Step 1 第一組（太陽、月亮）完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 03</div>
+    <h2>第二部分B：行星審計（火/水）</h2>
+  </div>
+  <h1>行星逐顆體檢（第二組：火星、水星）</h1>
+<p>——— 火星（Mars）：你的「靈魂指北針」，把衝勁和收入接到了學問與遠方 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>先講它管你什麼事。<strong>火星（代表：行動力、競爭、爭執衝突、機械與工具、軍警外科、運動、慾望衝勁）在你盤裡管兩個宮：第6宮（代表：工作競爭、健康疾病、債務、服務、部屬、對手）和第11宮（代表：收入獲利、人脈社群、願望達成）。</strong> 它本人站在<strong>第9宮（代表：運氣福報、貴人與老師、父親、遠方與出國、信仰、高等教育、正義）的水瓶座</strong>上。連起來：<strong>你「拚收入、拚競爭、下場服務」的那股行動力，被接到了「學問、遠方、貴人、信仰」這個高處。</strong> 白話說，你賺錢、你較勁的戰場，天生偏向「有知識含量、跟遠方或體制或專業有關」的地方，而不是純體力活。</p>
+<p>但火星還有一個更重的身份——<strong>它是你的「靈魂指示星」（AK，這套體系裡代表你這輩子靈魂最想完成的方向的關鍵星）。</strong> 它落在第9宮，這是一個很有意思的訊號：<strong>你靈魂深處真正嚮往的，是「意義、智慧、更高的答案、遠方、正道」這類東西。</strong> 你不是那種只想賺錢享樂就滿足的人——你內在有一個「想搞懂點什麼、想活得有道理、想往高處走」的指北針。這條線一旦被你意識到，會成為你人生後半段很強的推力。</p>
+<p>再講它狀態。火星力量中偏弱（99.6%，差一點到及格）、客居在水瓶座這個敵方環境，而且度數走到了「老年期」（24度）。這幾點合起來的意思是：<strong>你的火星不是那種橫衝直撞的猛將型，而是「用腦子打、用策略打、比較成熟收斂」的類型</strong>——它旁邊還緊貼著水星（思考、溝通），所以你的行動力常常是「先想清楚再動」，甚至可能顯得沒那麼有攻擊性。這有好有壞：好處是你不魯莽；要留意的是<strong>關鍵時刻的「衝一把」的爆發力需要刻意培養</strong>，別讓「想太多」把該出手的時機拖過去。因為火星也管第6宮，它「成長型競爭者」的角色帶一點「越用力越有內耗」的紋理——競爭與服務的場合容易伴隨摩擦、健康上也要留意火氣與意外碰撞。</p>
+<p>【關鍵數據】</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>值</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>角色</td>
+<td>成長型競爭者（11宮主，兼管6宮）＋靈魂指示星（AK）</td>
+<td>拚收入與競爭；也是靈魂方向的指北針</td>
+</tr>
+<tr>
+<td>健康</td>
+<td>正常、但與水星緊貼（3.9°）</td>
+<td>行動力與思考綁在一起，先想後動</td>
+</tr>
+<tr>
+<td>尊貴</td>
+<td>敵方（水瓶座）</td>
+<td>客居他鄉，環境不太幫</td>
+</tr>
+<tr>
+<td>力量</td>
+<td>Shadbala 99.6%</td>
+<td>中偏弱，差一點及格</td>
+</tr>
+<tr>
+<td>落點</td>
+<td>第9宮（運氣/貴人/遠方/高學問）＝吉路</td>
+<td>位置吉，把行動力接到高處</td>
+</tr>
+<tr>
+<td>年齡</td>
+<td>老年期（24°）</td>
+<td>收斂、策略型，非猛衝型</td>
+</tr>
+</tbody>
+</table>
+<p>【推演邏輯】火星的訊號合起來是：<strong>方向很高（靈魂指向意義與學問、收入接到9宮的知識與遠方），但引擎偏理性收斂（敵方位＋老年度數＋緊貼水星）。</strong> 所以你賺錢、較勁、追尋，都偏「動腦、講策略、往有意義的方向走」，而不是拼蠻力。要補的功課是「該出手時別猶豫」。</p>
+<p>【特別提醒】卡拉卡方向鐵律：AK＝火星在9宮，指向「意義／學問／遠方」的靈魂方向是確定的；火星偏弱只是「執行時比較收斂」，不改變方向。火星＋水星＝吉凶捆綁（行動力與思考綁一起，好壞參半）。</p>
+<p>【置信度】：<strong>中高</strong>——靈魂方向（9宮）與收入戰場（9宮的知識性）方向一致；引擎偏弱是明確但不否定方向的執行信號。</p>
+<hr />
+<p>——— 水星（Mercury）：你這盤的主角本人、當家 17 年的掌舵者 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>這顆星最重要，因為<strong>它是你的命主星（整張盤的主角、代表「你自己」的那顆星），同時你現在正走它的大運（2025–2042，共17年）。</strong> 先講它管你什麼事：<strong>水星（代表：溝通表達、思考邏輯、商業買賣、文書與資料、學習、技能、雙手）管你的第1宮（你自己、身體、個性、人生方向）和第4宮（家、母親、內心安定、不動產、學歷根基）。</strong> 它本人站在<strong>第9宮（運氣、貴人、父親、遠方、信仰、高等教育）的水瓶座</strong>上。</p>
+<p>把這串起來，就是你這個人的核心設定：<strong>「你自己」和「你的家與根」都跟「頭腦、學習、溝通」牢牢綁在一起，而你這個人的舞台是「求知、往遠方走、遇貴人、鑽研更高的學問」。</strong> 你落在水瓶座（一個系統性、講邏輯、偏另類、跟科技與人道有關、不太從眾的星座）——所以你骨子裡是個<strong>「愛思考、有點特立獨行、對新知識和體制／系統有興趣的知識型人」</strong>，你證明自己的方式是靠腦袋、靠專業、靠把複雜的東西講清楚。</p>
+<p>再講它狀態，這裡要對你誠實。水星力量中偏弱（98.7%，差一點點到及格線）、客居在水瓶座這個敵方環境，而且旁邊緊貼著火星（競爭、急躁、衝突）。因為它是<strong>當前 17 年大運的主星</strong>，我按這套體系的判定規則跑了一遍：<strong>這個大運機械判定落在「困難期」——不是「災難期」，而是「要靠自己拚、過程帶競爭與急躁摩擦、拼了才有收成」的自我磨練期。</strong> 為什麼？因為它有兩個扣分項（力量差一點及格、緊貼火星）壓過了加分項（落在第9宮吉位）。</p>
+<p>但請你這樣理解它：<strong>這畢竟是你「命主星（你自己）」當家的 17 年——本質上這是一段「你親自掌舵、命運的主動權在你手上」的時期。</strong> 難，難在「沒有人會白白給你、要靠腦子和嘴一分一分掙」；但主動權在你、舞台又是你最擅長的「學習與溝通」，這反而是你最能靠自己翻出成績的一段路。它落在第9宮也是實打實的好——這 17 年很適合<strong>進修、考證照、往更高的專業走、與貴人／老師連結、甚至跟遠方或跨域有關的發展。</strong> 目前的小運是水星—水星（純水星能量，2025年6月–2027年11月）：把個人專業、表達、商業、學習這幾件事往前推，就是踩在節奏上。</p>
+<p>【關鍵數據】</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>值</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>角色</td>
+<td>命主星（你自己）＋交易者（管1宮、4宮）</td>
+<td>你這個人、你的家與根，都綁在頭腦與學習上</td>
+</tr>
+<tr>
+<td>健康</td>
+<td>與火星緊貼（3.9°）</td>
+<td>思考帶競爭與急躁，需防想太多或衝動言語</td>
+</tr>
+<tr>
+<td>尊貴</td>
+<td>敵方（水瓶座）</td>
+<td>客居他鄉、偏另類的知識型環境</td>
+</tr>
+<tr>
+<td>力量</td>
+<td>Shadbala 98.7%</td>
+<td>中偏弱，差一點及格</td>
+</tr>
+<tr>
+<td>落點</td>
+<td>第9宮（運氣/貴人/遠方/高學問）＝吉路</td>
+<td>進修、遠方、貴人是你的主場</td>
+</tr>
+<tr>
+<td>當前大運</td>
+<td>水星大運 2025–2042（困難期）</td>
+<td>自我磨練期，主動權在你手上</td>
+</tr>
+</tbody>
+</table>
+<p>【推演邏輯】水星的四個關鍵（是你自己＋管家與根＋落在求知遠方的9宮＋當前當家17年）指向：<strong>未來這段人生的主軸，是「你靠頭腦、學習、溝通，親自把自己的位置掙出來」。</strong> 過程會有磨（引擎偏弱＋火星摩擦），但方向（9宮進修／遠方／貴人）是吉的，主動權在你，這是可以靠努力翻盤的一段。</p>
+<p>【特別提醒】無落陷、無燃燒。困難期＝自我磨練（非災難），需靠主動與專業化解。方向（9宮吉位）與執行難度（敵方位＋火星摩擦）分層陳述——方向不因難度而錯。</p>
+<p>【置信度】：<strong>高</strong>——命主星設定與大運方向清晰一致；「困難期」是誠實的執行信號，需以主動經營化解。</p>
+<p>=== Step 1 第二組（火星、水星）完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 04</div>
+    <h2>第二部分C：行星審計（木/金）</h2>
+  </div>
+  <h1>行星逐顆體檢（第三組：木星、金星）</h1>
+<p>——— 木星（Jupiter）：管著你婚姻與事業兩塊招牌，卻是全盤最需要照顧的一顆 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>先講它管你什麼事，這很關鍵。<strong>木星（代表：智慧與學識、老師與貴人、法律、信仰、財富擴張、女命的丈夫、子女、樂觀）在你盤裡管兩個超重要的宮：第7宮（代表：配偶婚姻、合夥人、公開的對手、客戶、合約）和第10宮（代表：事業、社會地位、名聲、公眾成就）。</strong> 它本人落在<strong>第5宮（代表：戀愛、子女、才華創意、玩樂、投機、智力）的天秤座</strong>上。連起來：<strong>你的「婚姻」和「事業招牌」這兩塊，都握在同一顆星手上，而這顆星把它們帶到了「才華、戀愛、子女、創意」的第5宮。</strong> 這意味著你的事業與婚姻，天生和「創作、教學、與小孩／年輕人有關、討喜有趣的事」深深牽連在一起。</p>
+<p>再講它狀態，這裡要坦白。<strong>木星是你這 7 顆主星裡狀態最差的一顆</strong>：它客居在天秤座的「死敵位」（一個很不友善的環境，能量偏弱——但請注意，這是「客居不順」，不是「故障落陷」，能量沒有反轉）、又處於<strong>逆行</strong>、加上它同時管兩個角宮（第7、第10）會觸發一個古典法則叫「角宮吉星失力」（好脾氣的吉星去管最重的位置，反而容易鬆懈）。三個因素疊起來，木星是本盤你最需要「主動經營、別放養」的一塊。</p>
+<p>那實際會怎麼影響你？木星逆行的意思，一層是「<strong>深鑽型</strong>」——你對它管的事（智慧、信仰、婚姻、事業意義）想得很深、很內化，但<strong>表達或落地容易卡、需要回爐重來一次</strong>；另一層是宮主逆行的鐵律：<strong>它管的第7宮（婚姻）和第10宮（事業）都帶有「延遲，或需要走第二次、修正一次才成」的紋理。</strong> 白話說：你的婚姻和事業定型，可能不是一次到位、比別人晚一點或轉個彎才穩，但<strong>轉過那個彎之後底子是真的</strong>。三個好消息幫它托底：一是它落在第5宮這個吉位（不是凶地）；二是它落在一個「滋養保護點」（Pushkara Navamsa），<strong>跌倒後有回血緩衝</strong>；三是它從第5宮回頭照看你的上升點（第1宮），等於<strong>在暗中護著你這個人本身</strong>。另外木星是你的「母親指示星」（MK），與月亮同宮——代表你母親的能量場在你的才智與創造這條線上是有份量、偏智慧型的（這是能量場結構參考，你和母親實際相處的感受以你自己為準）。</p>
+<p>【關鍵數據】</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>值</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>角色</td>
+<td>交易者（管7宮婚姻、10宮事業，皆角宮）＋母親指示星（MK）</td>
+<td>婚姻與事業兩塊招牌的管家</td>
+</tr>
+<tr>
+<td>健康</td>
+<td>逆行（深鑽＋需回爐一次）＋落滋養保護點</td>
+<td>想得深、落地慢，但有回血緩衝</td>
+</tr>
+<tr>
+<td>尊貴</td>
+<td>死敵位（天秤座）</td>
+<td>客居很不順，偏弱但未反轉</td>
+</tr>
+<tr>
+<td>力量</td>
+<td>Shadbala 93.8%</td>
+<td>七顆主星中最弱</td>
+</tr>
+<tr>
+<td>落點</td>
+<td>第5宮（才華/子女/創意）＝吉路</td>
+<td>位置吉，底子仍在</td>
+</tr>
+<tr>
+<td>格局</td>
+<td>與月亮同宮＝象王格局；與金星互看＝王者格局參與星</td>
+<td>學習力＋地位通道</td>
+</tr>
+</tbody>
+</table>
+<p>【推演邏輯】木星的訊號是「<strong>位置吉、底子在、但落地慢</strong>」：它把你最重的婚姻與事業，接到了討喜的第5宮（吉），本身又受保護、暗護你的命宮——所以方向與底子是好的；但死敵位＋逆行＋角宮失力讓它「<strong>延遲、需回爐一次才成</strong>」。這正好解釋了為什麼你的事業與婚姻可能比別人晚一步定型、或要轉個彎——<strong>這不是壞事，是「慢工出細活、第二次才對」的節奏。</strong></p>
+<p>【特別提醒】欺騙性風險檢查：木星雖為吉星，但管的是角宮＋逆行客居死敵，無「吉星擔凶職」的欺騙性風險，屬「延遲型」而非「毒性型」。逆行雙層陳述：功能上＝深耕回爐（吉星深鑽），體感上＝過程反覆。參與王者格局（與金星）、象王格局（與月亮）——品質受木星偏弱拖累，需搭配對的大運才全額兌現。</p>
+<p>【置信度】：<strong>中高</strong>——「延遲／回爐」方向明確；位置吉＋保護＋逆行深鑽是一致的「慢而穩」信號。</p>
+<hr />
+<p>——— 金星（Venus）：你品質最好的一張牌，也是你的「配偶指北針」 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>先講它管你什麼事。<strong>金星（代表：愛情、配偶、美感藝術、金錢享受、社交、女性、車輛、一切討喜享樂的事物）在你盤裡管第5宮（才華、戀愛、子女、創意、投機）和第12宮（花費、海外、靈修、獨處、放下）。</strong> 它本人站在<strong>第11宮（代表：收入獲利、人脈社群、願望達成、大哥級的朋友）的牡羊座</strong>上。</p>
+<p>再講它狀態，這是好消息：<strong>金星是你全盤品質最好的一顆星之一</strong>——力量排名第二（138.5%），落在友善的環境，而且它是<strong>同座加持（Vargottama，本命盤和第9分盤都落在同一星座，等於雙重穩固）</strong>。更關鍵的一個數字：<strong>在所有星裡，金星給你的「福果」最高、「苦果」最低</strong>——白話說，這顆星幾乎只給你甜頭、很少給你苦頭。它的角色是「盟友（Faithful，管第5宮這個最吉利的三角宮）」，等於一個天然站在你這邊、專門帶來好事的助力。唯一要留意的是它度數還很嫩（2度、「嬰兒期」），代表<strong>它的潛力還在慢慢展開、越到人生後段越發光</strong>（好在同座加持讓它很穩，不會夭折）。</p>
+<p>它對你最重要的一件事：<strong>金星是你的「配偶指示星」（DK，這套體系裡代表另一半的關鍵指示星）。</strong> 它又強又穩、落在第11宮（人脈、社群、朋友圈），這給了很明確的方向訊號：<strong>你另一半的「硬體品質」很好，而且你們很可能是在「社交圈、朋友介紹、社群、共同的團體活動」裡遇到的。</strong> 牡羊座的色彩讓對方可能偏「有活力、獨立、主動、帶點衝勁與少年感」的類型。詳細畫像留在感情板塊展開。另外金星也管第12宮，帶一點「願意為美好的事物、為享受、為遠方或心靈成長花錢／付出」的底色。</p>
+<p>因為金星這麼好，這裡先埋一個伏筆：<strong>你未來的金星大運（2049–2069，約 55 至 75 歲，長達 20 年）很可能是你人生後半段真正開花的一段</strong>——這條線我們在事業與格局板塊會回來講。</p>
+<p>【關鍵數據】</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>值</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>角色</td>
+<td>盟友（5宮主，最吉的三角宮）＋配偶指示星（DK），兼管12宮</td>
+<td>天然帶好事的助力；另一半的指北針</td>
+</tr>
+<tr>
+<td>健康</td>
+<td>同座加持（Vargottama，雙重穩固）＋嬰兒期（潛力待展）</td>
+<td>很穩，越到後段越發光</td>
+</tr>
+<tr>
+<td>尊貴</td>
+<td>友方（牡羊座）</td>
+<td>環境友善，如魚得水</td>
+</tr>
+<tr>
+<td>力量</td>
+<td>Shadbala 138.5%（福果全盤最高、苦果最低）</td>
+<td>品質最好的一顆</td>
+</tr>
+<tr>
+<td>落點</td>
+<td>第11宮（收入/人脈/願望）＝吉路</td>
+<td>財路與人脈的加持</td>
+</tr>
+<tr>
+<td>格局</td>
+<td>與木星互看＝王者格局的「強端」參與星</td>
+<td>才華接地位的通道，意志端很強</td>
+</tr>
+</tbody>
+</table>
+<p>【推演邏輯】金星是全盤「方向好、品質好、環境好」三好齊全的一顆：<strong>它把你的才華、戀愛、享受（5宮）接到收入與人脈（11宮），本身又強又穩、幾乎只給甜頭。</strong> 所以你的「魅力、審美、創作、關係、另一半品質、靠討喜的東西獲利」這一整條線，是你的先天強項。它也是王者格局裡「意志很強的那一端」（只是要靠偏弱的木星那端配合才全額落地）。</p>
+<p>【特別提醒】卡拉卡方向鐵律：DK＝金星強旺，配偶「硬體」品質確定良好（指取值確定，非畫像細節確定）。王者格局強端參與星。Vargottama＝吉星同座＝最高穩態、零損耗兌現。</p>
+<p>【置信度】：<strong>高</strong>——品質、方向、環境全部一致偏吉，無矛盾信號。</p>
+<p>=== Step 1 第三組（木星、金星）完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 05</div>
+    <h2>第二部分D：行星審計（土/羅/計 ＋ 總結）</h2>
+  </div>
+  <h1>行星逐顆體檢（第四組：土星、羅睺、計都）</h1>
+<p>——— 土星（Saturn）：你最穩的底盤，把紀律和耐力接到了福報與學問 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>先講它管你什麼事。<strong>土星（代表：紀律、責任、時間與耐力、限制與延遲、勞工基層、老人、慢性與長期的事務、體制內的規矩）在你盤裡管第8宮（代表：突發變故、危機、他人的錢如遺產保險投資、深度轉化、身心隱疾）和第9宮（代表：運氣福報、貴人與老師、父親、遠方、信仰、高等教育）。</strong> 它本人就站在<strong>第9宮的水瓶座</strong>——而水瓶座正是土星自己的家。</p>
+<p>再講狀態，這是全盤最扎實的一塊：<strong>土星入自己的家（自廟），力量排名第三（115.2%），而且是同座加持（Vargottama，本命盤和第9分盤都在水瓶座，等於在自己家裡又蓋了一層地基）。</strong> 白話說，這是<strong>你這張盤地基最穩、最不會塌的一顆星</strong>。它的角色是「盟友（Faithful，管第9宮這個吉利的三角宮）」。這解釋了一件很重要的事：<strong>你上一個大運正是土星大運（2006–2025，約 12 至 31 歲），而那 17 年由你這顆最穩、最自律、又坐在「學問與福報」宮位的星掌管</strong>——所以你的求學、打底、養成紀律的那段人生，結構上是被好好撐住的（機械判定為「正面期」）。你今天的專業底子、耐操程度、系統性思考，很多是那段時間長出來的。</p>
+<p>那它給你什麼特質？土星把「紀律、耐力、長期主義」接到了第9宮（學問、信仰、遠方、正道）——<strong>你有能力靠「熬、靠專精、靠把一件事做很久很深」來換取福報與地位</strong>，這種人往往大器晚成、越老越值錢。它又管第8宮（危機、他人的錢、深度轉化），而且自身很強——代表<strong>你有處理危機、鑽研艱深、管理別人資源（金融、保險、研究、審計、隱藏的東西）的硬底子</strong>。唯一要留意的是它的「苦果」數值偏高：<strong>你的成果多半不是輕鬆得來的，是靠耐心和吃苦換的</strong>——但換來的東西很真。土星也是你的「對手／障礙指示星」（GK）；它這麼強，代表<strong>你耗得過對手、熬得過障礙。</strong></p>
+<p>【關鍵數據】</p>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>值</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>角色</td>
+<td>盟友（9宮主，吉三角），兼管8宮（危機/他人的錢）＋對手指示星（GK）</td>
+<td>把紀律接到福報學問；能處理危機與深度</td>
+</tr>
+<tr>
+<td>健康</td>
+<td>同座加持（Vargottama，雙重穩固）</td>
+<td>全盤地基最穩</td>
+</tr>
+<tr>
+<td>尊貴</td>
+<td>入自己的家（自廟）</td>
+<td>舒適、有主導權</td>
+</tr>
+<tr>
+<td>力量</td>
+<td>Shadbala 115.2%（苦果偏高）</td>
+<td>排名第三，強，但成果靠吃苦換</td>
+</tr>
+<tr>
+<td>落點</td>
+<td>第9宮（運氣/貴人/遠方/高學問）＝吉路</td>
+<td>紀律直接變福報</td>
+</tr>
+<tr>
+<td>前一大運</td>
+<td>土星大運 2006–2025（正面期）</td>
+<td>你的求學打底期，結構穩固</td>
+</tr>
+</tbody>
+</table>
+<p>【推演邏輯】土星是「方向吉、地基最穩、但要吃苦」的一顆：<strong>入自己家＋同座加持＋落9宮，把你的耐力與紀律接到福報、學問、深度轉化</strong>——所以你是靠「熬、專精、扛得住危機」大器晚成的類型。苦果偏高是代價（成果不輕鬆），但兌現很真。</p>
+<p>【特別提醒】高壓紅利檢查：土星為自然凶星，但此處角色是盟友（非命主星／CEO），不觸發標準高壓紅利標籤；然其「苦果偏高」屬於「過程苦、結果真」的同源紋理，代價必提。同座加持＋自廟＝結構性穩固。</p>
+<p>【置信度】：<strong>高</strong>——尊貴、力量、位置全部一致偏強，苦果偏高是明確且不改方向的代價信號。</p>
+<hr />
+<p>——— 羅睺（Rahu）：把你的「較勁與服務」放到最大的那股外來能量 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>羅睺是「月亮北交點」，它沒有自己管的宮、也沒有力量分數，所以我用「節點結果引擎」一層層追它，而不是給它貼一個吉凶標籤。</p>
+<ul>
+<li><strong>第一層·舞台</strong>：羅睺落在<strong>第6宮（代表：工作競爭、健康疾病、債務、服務、部屬、對手）的天蠍座</strong>。羅睺是「放大器」，它把第6宮的主題放到最大——所以<strong>「較勁、下場服務、處理麻煩、跟對手周旋」這件事在你人生裡份量被放大了。</strong> 有意思的是，羅睺落第6宮在傳統上其實是<strong>「戰將位」</strong>：擅長打敗對手、擺平債務與競爭、在服務／醫療／法律／分析這類「解決問題」的戰場上特別能打。</li>
+<li><strong>第二層·現實執行者</strong>：羅睺落天蠍，天蠍的主人是火星——所以羅睺的能量實際上是<strong>透過火星（在第9宮、你的靈魂指北星）落地的</strong>。這把「較勁與服務」導向了「有意義、有知識含量、往高處走」的目標，而不是純為爭而爭。</li>
+<li><strong>第三層·分盤兌現</strong>：在事業分盤（D10）裡羅睺落在第9宮——再次呼應「靠專業、往高處、跟遠方或體制有關」去發揮。</li>
+<li><strong>第四層·時間接力</strong>：羅睺的大運很遠（2092年），但它會在你當前水星大運裡當一段小運（水星—羅睺，2034–2037）——那段時間「放大格局、走非傳統路線、跨域突破」的能量會被點亮。</li>
+</ul>
+<p>綜合看，羅睺三要素偏「忙而費力」（火星後台差一點及格、落在第6凶宮），所以它是<strong>「戰場位」而非「福地」</strong>：能打、能拚、能在麻煩堆裡殺出來，但要小心的陰影面是——<strong>過度操勞、健康拉警報、為了爭一口氣把自己逼太緊、或因為擴張太猛而背債。</strong></p>
+<p>【結果鏈】舞台（第6宮·競爭服務）→ 現實執行者（火星在第9宮·把較勁導向意義與學問）→ 分盤兌現（D10第9宮·靠專業往高處）→ Dasha接力（2034–2037水星—羅睺，跨域突破能量點亮）。</p>
+<p>【置信度】：<strong>中</strong>——「戰將位／越界放大」方向清楚；節點本無吉凶，須靠火星與大運接力結算，故留餘地。</p>
+<hr />
+<p>——— 計都（Ketu）：把你拉向「放下、靈性與遠方」的那股抽離能量 ———</p>
+<p>【這顆星對你意味著什麼】</p>
+<p>計都是「月亮南交點」，同樣沒有掌宮與力量分，一樣用結果引擎追。</p>
+<ul>
+<li><strong>第一層·舞台</strong>：計都落在<strong>第12宮（代表：花費損耗、海外、獨處、睡眠、靈修、隱居、放下、醫院／異地）的金牛座</strong>。第12宮正是計都「回老家」的地方——<strong>這是一個天生就適合靈性、放下、往遠方或幕後走的配置。</strong> 它代表你內在有一股「對世俗抓取比較看淡、容易被心靈／遠方／獨處的東西吸引」的力量。</li>
+<li><strong>第二層·現實執行者</strong>：計都落金牛，金牛的主人是金星——而金星是你<strong>全盤品質最好的一顆星（強、又同座加持）</strong>。這是一個很棒的訊號：<strong>你的「放下、靈性、遠方」這條線，背後有一個非常強的金星撐著</strong>，所以它不是虛無縹緲的逃避，反而可能成為一種「有質感的、帶來恩典的抽離」——你越放下某些執著，越可能在美感、關係、財路上反而順起來。</li>
+<li><strong>第三層／第四層·分盤與接力</strong>：計都與羅睺永遠對沖，形成你人生的一條主軸——<strong>「第6宮的入世較勁 ↔ 第12宮的出世放下」</strong>。你這輩子會反覆在「該拚該爭」和「該放該退」之間校準。</li>
+</ul>
+<p>綜合看，計都三要素偏「混合但有好底」（後台金星很強是加分、落第12凶宮是減分，但第12對計都是本命歸宿）——所以它是<strong>「有強力後盾的靈性抽離位」</strong>：容易在海外、幕後、心靈成長、獨處中找到安頓；要留意的陰影面是<strong>在第12宮管的「花費、隔離」上要有節制，別讓錢和心不知不覺流掉。</strong></p>
+<p>【結果鏈】舞台（第12宮·放下靈性遠方）→ 現實執行者（強金星在第11宮·讓抽離帶來恩典）→ 主軸（6–12軸：入世較勁 ↔ 出世放下）→ 一生反覆校準的功課。</p>
+<p>【置信度】：<strong>中高</strong>——計都在12宮的靈性方向＋強金星後台一致；節點須靠接力結算，留一分餘地。</p>
+<hr />
+<h2>Step 1 收尾：格局終判表（後續板塊一律以此為準）</h2>
+<p>逐顆體檢完成後，把預掃的格局逐條裁決：</p>
+<table>
+<thead>
+<tr>
+<th>格局</th>
+<th>參與星</th>
+<th>預掃狀態</th>
+<th>終判</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>王者格局（Raja Yoga）</td>
+<td>金星（5宮主·才華）× 木星（7/10宮主·婚姻事業）互看</td>
+<td>成立</td>
+<td><strong>確認（品質分裂）</strong></td>
+<td>金星強端（138%＋同座加持）意志很強；木星弱端（死敵＋逆行）落地慢——地位／影響力通道是真的，但全額兌現要等對的大運（尤其2049起的金星大運）</td>
+</tr>
+<tr>
+<td>象王格局（Gajakesari）</td>
+<td>木星 × 月亮 同落5宮</td>
+<td>成立</td>
+<td><strong>確認（打折）</strong></td>
+<td>學習力、悟性、把智慧與情感結合的天賦是真的；但木星弱＋月亮弱（93%），效力打折，需大運激活才明顯</td>
+</tr>
+<tr>
+<td>輔弼格局（Adhi Yoga）</td>
+<td>金星（從月亮起10/11/12宮）</td>
+<td>弱成立</td>
+<td><strong>確認（弱）</strong></td>
+<td>金星強是加分，但所落位置夾雜凶星能量，屬弱成立——「受人輔佐、得力於旁人」的底子存在但不強</td>
+</tr>
+<tr>
+<td>其餘（使命格局／財富格局／五大賢者格局等）</td>
+<td>—</td>
+<td>不成立</td>
+<td><strong>否決</strong></td>
+<td>計算引擎核驗結構未成立，後續不引用</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ 後續 Step 4 格局激活驗證、板塊10 一律引用本表，不採信預掃清單。</p>
+</blockquote>
+<p>=== Step 1 第四組（土星、羅睺、計都）＋ 格局終判表 完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 06</div>
+    <h2>第三部分A：D9盤深度審計</h2>
+  </div>
+  <h1>第9分盤（D9）逐星深度審計</h1>
+<blockquote>
+<p><strong>D9 是什麼</strong>：第9分盤（Navamsha）是吠陀占星裡最重要的「品質檢驗盤」。如果說本命盤（D1）講的是「你答應要做什麼」，那 D9 講的就是<strong>「這些承諾的品質如何、能不能兌現、兌現多少」</strong>。它尤其關係到婚姻與人生後半段的真實底子。
+<strong>你的 D9 上升是水瓶座（穩定，可放心使用）。</strong></p>
+<p>三條鐵律先講清楚：① D1 決定「做什麼」，D9 只決定「做得好不好」，不會改變一顆星的本質；② D9 是「品質微調」不是「屬性翻轉」；③ D9 弱不美化、D9 強不誇大。</p>
+</blockquote>
+<hr />
+<h2>頭條發現（先看這三個）</h2>
+<ol>
+<li><strong>土星在 D9 依然入自己的家（自廟）＋同座加持，落 D9 第1宮</strong>——這是全盤兌現品質最高的一顆，等於「你的紀律與福報，說到做到、100% 兌現」。</li>
+<li><strong>木星（管你婚姻與事業）表面弱、內裡卻強</strong>——它在本命盤客居死敵位，但在 D9 竟然回到自己的家（雙魚座自廟）！這是典型的「<strong>表面吃力、內裡有底、兌現走窄門</strong>」——你的婚姻與事業，起步慢、看著不順，但熬過去底子是真的。這是本盤最重要的一個反差。</li>
+<li><strong>金星（你的配偶指示星）同座加持</strong>——另一半與感情的品質，D9 再次確認穩固。</li>
+</ol>
+<hr />
+<p>——— 太陽 D9 審計 ———</p>
+<p>【深層品質】你的太陽表裡相當一致——本命是全盤最強、事業宮的王牌，到了 D9 落在<strong>第9分盤的第10宮（事業區）</strong>，狀態是友方。也就是說：<strong>你「靠自己闖出事業與名聲」這個承諾，不只是表面漂亮，內裡也交得出貨。</strong> 它的「房東」（幫它保管資產的星）是火星，中性、還算可靠。從本命到 D9 的變現路徑順暢——想法到成果之間內耗小。這是一顆你可以放心倚重的星：<strong>你把自己往台前放的每一分努力，D9 都幫你記帳、幫你兌現。</strong></p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份繼承</td>
+<td>競爭者 ＋ D9維持檔</td>
+<td>靠自己闖的能量穩定維持</td>
+</tr>
+<tr>
+<td>內核品質</td>
+<td>D9友方、落事業區</td>
+<td>承諾扎實、可兌現</td>
+</tr>
+<tr>
+<td>落點安全</td>
+<td>D9第10宮＝金庫區</td>
+<td>有保障</td>
+</tr>
+<tr>
+<td>房東</td>
+<td>火星＝中性</td>
+<td>還算可靠</td>
+</tr>
+<tr>
+<td>變現難度</td>
+<td>順暢（1/5/9）</td>
+<td>想法到成果內耗小</td>
+</tr>
+<tr>
+<td>果實投射</td>
+<td>→本命第6宮</td>
+<td>在「工作服務、解決問題」的領域見效</td>
+</tr>
+<tr>
+<td>結算</td>
+<td>增值原始股</td>
+<td>兌現約 80–100%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 月亮 D9 審計 ———</p>
+<p>【深層品質】月亮表面偏弱（本命七顆最弱），到 D9 落在<strong>第3宮（努力、溝通區）、狀態中性（維持檔）</strong>。它落在一個「滋養保護點」（Pushkara Bhaga），這給了它一層回血緩衝——<strong>你的情緒與內心雖然續航偏弱，但恢復力其實不差，跌倒容易爬起來。</strong> 它的交易者身份（管錢與家）在 D9 維持，兌現要靠一點主動努力（第3宮＝需下功夫的區）。整體是「引擎不強，但有保護、方向不歪」的一顆。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份繼承</td>
+<td>交易者 ＋ D9維持檔</td>
+<td>錢與家的管理維持</td>
+</tr>
+<tr>
+<td>內核品質</td>
+<td>D9中性、落努力區＋滋養保護點</td>
+<td>恢復力有緩衝</td>
+</tr>
+<tr>
+<td>落點安全</td>
+<td>D9第3宮＝摩擦區</td>
+<td>需要額外努力</td>
+</tr>
+<tr>
+<td>房東</td>
+<td>火星＝中性</td>
+<td>尚可</td>
+</tr>
+<tr>
+<td>變現難度</td>
+<td>中性（7步）</td>
+<td>不特別順也不特別堵</td>
+</tr>
+<tr>
+<td>果實投射</td>
+<td>→本命第11宮</td>
+<td>在「收入、人脈、願望」的領域見效</td>
+</tr>
+<tr>
+<td>結算</td>
+<td>穩健國債</td>
+<td>兌現約 50–80%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 火星 D9 審計 ———</p>
+<p>【深層品質】火星（你的靈魂指北星）本命客居敵方位，到 D9 落在<strong>第4宮（家、內心安定的區域）、狀態中性（維持）</strong>，還落在一個「滋養保護點」（Pushkara Navamsa）——更重要的是，它在 D9 的「房東」是金星，而金星是你全盤最強最穩的星。這代表：<strong>你這股「往意義與高處走」的靈魂驅動，背後有一個很強的金星在撐腰，而且它的落腳點是「內心安定的家」。</strong> 白話說，你的靈魂最終想找的，不是永無止盡的征戰，而是<strong>「在一個安定的內在／根基上，把有意義的事做深」</strong>。這顆星表面看不強，但後台很硬。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份繼承</td>
+<td>競爭者／靈魂指標 ＋ D9維持檔</td>
+<td>靈魂方向穩定維持</td>
+</tr>
+<tr>
+<td>內核品質</td>
+<td>D9中性、落家宅區＋滋養保護點</td>
+<td>有保護、有安定落點</td>
+</tr>
+<tr>
+<td>落點安全</td>
+<td>D9第4宮＝金庫區</td>
+<td>有保障</td>
+</tr>
+<tr>
+<td>房東</td>
+<td>金星＝強（138%）</td>
+<td><strong>後台很硬、兌現可靠</strong></td>
+</tr>
+<tr>
+<td>變現難度</td>
+<td>中性（4步）</td>
+<td>尚可</td>
+</tr>
+<tr>
+<td>果實投射</td>
+<td>→本命第12宮</td>
+<td>在「靈性、遠方、放下」的領域見效</td>
+</tr>
+<tr>
+<td>結算</td>
+<td>穩健國債</td>
+<td>兌現約 80%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 水星 D9 審計 ———</p>
+<p>【深層品質】水星（你自己、命主星）本命客居敵方位，到 D9 落在<strong>第3宮（溝通、努力、技能區）、狀態中性（維持）</strong>。它的命主星身份在 D9 維持——<strong>你這個人的兌現方式，是「靠溝通、靠技能、靠親手下去做」一分一分掙的</strong>（第3宮正是勇氣與動手的宮）。這跟本命大運「困難期＝自我磨練」完全呼應：你的成果不會從天上掉下來，但只要肯動手、肯開口，D9 認這份帳。房東火星中性，尚可。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份繼承</td>
+<td>命主星／交易者 ＋ D9維持檔</td>
+<td>「靠自己」的設定維持</td>
+</tr>
+<tr>
+<td>內核品質</td>
+<td>D9中性、落努力技能區</td>
+<td>靠動手與溝通兌現</td>
+</tr>
+<tr>
+<td>落點安全</td>
+<td>D9第3宮＝摩擦區</td>
+<td>需要努力</td>
+</tr>
+<tr>
+<td>房東</td>
+<td>火星＝中性</td>
+<td>尚可</td>
+</tr>
+<tr>
+<td>變現難度</td>
+<td>中性（3步）</td>
+<td>尚可</td>
+</tr>
+<tr>
+<td>果實投射</td>
+<td>→本命第11宮</td>
+<td>在「收入、人脈」的領域見效</td>
+</tr>
+<tr>
+<td>結算</td>
+<td>穩健國債</td>
+<td>兌現約 50–80%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 木星 D9 審計（本盤最重要的反差，重點看）———</p>
+<p>【深層品質】這是全盤最值得講的一顆。木星管你<strong>婚姻（第7宮）與事業（第10宮）</strong>，本命客居死敵位、又逆行，看起來是最弱的一塊。<strong>但一翻開 D9，它竟然回到了自己的家（雙魚座自廟）、落 D9 第2宮！</strong> 這叫「<strong>表面弱、內裡強</strong>」——按這套體系的裁決，就是「<strong>外顯吃力，但內裡有底，兌現走窄門：承諾的規模不大、但兌現率很高</strong>」。</p>
+<p>翻成白話：<strong>你的婚姻與事業，一開始會讓你覺得不順、慢、要重來一次——但只要你熬過那道窄門，它交出來的東西是扎實的、是真的。</strong> 這正好和本命木星「延遲／回爐一次才成」對上：不是不成，是「晚成、二次才對、成了就穩」。唯一的代價是「變現過敏」——從想法到落地的過程內耗比較大（第6步位移），需要你有耐心走完那段磨。它的房東是自己（雙魚自廟），後台穩；又落在滋養保護點，跌倒有緩衝。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份繼承</td>
+<td>交易者（婚姻/事業）＋ <strong>D9強檔（自廟）</strong></td>
+<td>表面弱、內裡強：兌現走窄門、兌現率高</td>
+</tr>
+<tr>
+<td>內核品質</td>
+<td>D9自廟（回到自己家）</td>
+<td>底子扎實</td>
+</tr>
+<tr>
+<td>落點安全</td>
+<td>D9第2宮＝金庫區</td>
+<td>有保障</td>
+</tr>
+<tr>
+<td>房東</td>
+<td>木星自己（雙魚自廟）</td>
+<td>後台穩</td>
+</tr>
+<tr>
+<td>變現難度</td>
+<td><strong>變現過敏（6步）</strong></td>
+<td>想法到落地內耗大、需耐心</td>
+</tr>
+<tr>
+<td>果實投射</td>
+<td>→本命第10宮</td>
+<td><strong>最終在「事業、地位」的領域結果</strong></td>
+</tr>
+<tr>
+<td>結算</td>
+<td>穩健國債（走窄門）</td>
+<td>兌現約 80%，但過程磨</td>
+</tr>
+</tbody>
+</table>
+<p>——— 金星 D9 審計（配偶指示星，重點看）———</p>
+<p>【深層品質】金星（你的配偶指示星、全盤品質最好的星）在 D9 落<strong>第3宮、狀態中性，但關鍵是它「同座加持」（Vargottama）</strong>——吉星同座加持是 D9 裡最高等級的穩態，等於「零損耗兌現」。所以：<strong>你在感情、才華、審美、享受這條線上答應的東西，D9 幾乎原封不動地交付。</strong> 另一半的品質、你自己的魅力與創作力，是這張盤裡最不用擔心的部分之一。唯一的小提醒是它落 D9 第3宮（需要你主動去經營、去溝通、去爭取，不是坐等），且果實落在本命第11宮（在人脈、社群裡結果——再次呼應「透過社交圈遇到對的人」）。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份繼承</td>
+<td>盟友／配偶指標 ＋ <strong>吉星同座加持</strong></td>
+<td>最高穩態、零損耗兌現</td>
+</tr>
+<tr>
+<td>內核品質</td>
+<td>Vargottama（雙重穩固）</td>
+<td>感情與才華品質最穩</td>
+</tr>
+<tr>
+<td>落點安全</td>
+<td>D9第3宮＝摩擦區</td>
+<td>需主動經營</td>
+</tr>
+<tr>
+<td>房東</td>
+<td>火星＝中性</td>
+<td>尚可</td>
+</tr>
+<tr>
+<td>變現難度</td>
+<td>順暢（同座1步）</td>
+<td>內耗小</td>
+</tr>
+<tr>
+<td>果實投射</td>
+<td>→本命第11宮</td>
+<td>在人脈、社群裡結果</td>
+</tr>
+<tr>
+<td>結算</td>
+<td>增值原始股</td>
+<td>兌現約 90–100%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 土星 D9 審計（全盤兌現品質最高，重點看）———</p>
+<p>【深層品質】土星在本命就入自己家＋同座加持，翻到 D9 <strong>依然入自己的家（水瓶座自廟）、同座加持、落 D9 第1宮（最核心的自我區）</strong>——這是全盤兌現品質最高的一顆，等於「<strong>說到做到、100% 全額交付</strong>」。你的紀律、耐力、處理危機與深度事務的能力，不是嘴上說說，是刻進骨子裡的真本事。</p>
+<p>要補一個誠實的紋理：土星是自然凶星又同座加持，這叫「硬化」——好處是<strong>你的結構力、責任感、長期主義極其穩固、永不動搖</strong>；但硬幣的另一面是，土星那種「嚴肅、慢、要掌控、放不太下」的特質也一樣根深蒂固，不太會軟化。對你這種「功能上是吉星」的土星來說，這整體是巨大的資產——<strong>它是你這輩子最可靠的底盤。</strong></p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份繼承</td>
+<td>盟友（福報/紀律）＋ <strong>D9強檔（自廟＋同座）</strong></td>
+<td>100% 全額兌現</td>
+</tr>
+<tr>
+<td>內核品質</td>
+<td>D9自廟＋Vargottama</td>
+<td>全盤最穩，真本事</td>
+</tr>
+<tr>
+<td>落點安全</td>
+<td>D9第1宮＝金庫區（核心）</td>
+<td>最有保障</td>
+</tr>
+<tr>
+<td>房東</td>
+<td>土星自己（自廟）</td>
+<td>後台最穩</td>
+</tr>
+<tr>
+<td>變現難度</td>
+<td>順暢（同座1步）</td>
+<td>內耗最小</td>
+</tr>
+<tr>
+<td>果實投射</td>
+<td>→本命第9宮</td>
+<td>在「福報、學問、遠方」的領域結果</td>
+</tr>
+<tr>
+<td>結算</td>
+<td>增值原始股</td>
+<td>兌現 100%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 羅睺 D9 審計 ———</p>
+<p>【深層品質】羅睺在 D9 落<strong>第6宮（競爭服務區）</strong>，並在滋養保護點上——與本命「戰將位」一致：D9 再次確認你「打競爭、處理麻煩」的能量被強化。它的房東是月亮（偏弱），所以這股能量仍需靠意義感（火星在9宮）與大運來引導，別純為爭而爭。<strong>兌現方式＝在競爭與服務的戰場上磨出成果，過程費力但能贏。</strong></p>
+<hr />
+<p>——— 計都 D9 審計 ———</p>
+<p>【深層品質】計都在 D9 落<strong>第12宮（靈性、放下、遠方的宮）</strong>——這是它的本命歸宿，方向一致；更關鍵的是它 D9 的房東是<strong>土星（在 D9 入自己家、全盤最穩的那顆）</strong>。這代表：<strong>你「放下、靈性、往遠方或幕後走」這條線，背後有最穩的土星在托底</strong>——它不是逃避，而是<strong>有結構、有耐力支撐的深度修行或抽離</strong>。兌現品質意外地穩。</p>
+<hr />
+<h2>D9 總結</h2>
+<ul>
+<li><strong>兌現最穩三顆</strong>：土星（100%，你的底盤）、金星（90–100%，感情與才華）、太陽（80–100%，事業）。這三條線你可以放心倚重。</li>
+<li><strong>最重要的反差</strong>：木星（婚姻＋事業）表面弱、內裡強——起步慢、要走窄門、過程磨，但熬過去底子是真的、最終在事業地位上結果。這解釋了你婚姻與事業「晚成、二次才對、成了就穩」的節奏。</li>
+<li><strong>靠自己兌現的線</strong>：水星（你自己）、火星（靈魂）、月亮（內心）都是「維持檔」——方向不歪、有保護，但要靠主動努力去兌現，不會自動落地。</li>
+<li><strong>一句話</strong>：你這張 D9 底子紮實（三顆頂級兌現星＋木星內裡有底），弱點不在「有沒有料」，而在「前期的慢與磨」——耐得住，後半場很穩。</li>
+</ul>
+<p>=== Step 2.1 D9 逐星深度審計完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 07</div>
+    <h2>第三部分B：分盤交叉分析</h2>
+  </div>
+  <h1>分盤交叉概述（D10 事業／D4 家產／D5 權力）</h1>
+<blockquote>
+<p><strong>分盤是什麼</strong>：吠陀占星會針對特定主題另外拆出「放大鏡盤」——D10 專看事業、D4 專看不動產與物質舒適、D5 專看權力與創造力。
+<strong>重要提醒</strong>：你的 <strong>D10（事業盤）和 D4（家產盤）在出生時間 ±1 分鐘內會跨星座（邊界敏感）</strong>——這代表底下由這兩張盤「上升」推出的宮位結論只能「參考、留餘地」，不能當定論。行星落在哪個星座是穩的，但落第幾宮會飄。<strong>D5（權力盤）穩定，可正常使用。</strong></p>
+</blockquote>
+<hr />
+<h2>D10 事業盤（⚠️邊界敏感，以下宮位結論僅供參考）</h2>
+<p><strong>基調</strong>：D10 上升落天蠍座（給定分鐘下），這是一個「深度、專注、要害、轉化」味道的事業基調——不是浮在表面的職業，偏向<strong>「鑽得深、抓要害、能處理複雜或有難度的事」</strong>。</p>
+<ul>
+<li><strong>線A（事業盤內部視角）</strong>：事業盤自己的「第10宮主」是太陽，太陽在事業盤裡<strong>入旺（頂配狀態）</strong>但落在事業盤的第6宮（服務、競爭、解決問題）——一句話：<strong>你的事業成就走「靠專業服務、解決難題、在競爭中出頭」的路，權威感很足。</strong> 另外水星（你的命主星）落在事業盤的<strong>第10宮（正中央的事業位）</strong>——代表<strong>「溝通、專業、把複雜的講清楚」就是你登上事業台面的那台車。</strong></li>
+<li><strong>線B（本命帶入視角）</strong>：你本命的「第10宮主木星」，帶著它的事業職責落進事業盤的<strong>第6宮（服務、競爭）</strong>——與線A呼應，都指向「服務型／解難型／競爭型」的事業場域。</li>
+</ul>
+<p><strong>綜合判斷（留餘地）</strong>：兩條線都指向「<strong>靠專業與解難能力、在有競爭或有難度的場域出頭</strong>」，而登台的工具是「溝通與智識」（水星在事業盤第10宮）、權威感很足（太陽入旺）。詳細職業藍圖建議另跑事業專項分析（vedic-career）。</p>
+<hr />
+<h2>D4 家產盤（⚠️邊界敏感，以下宮位結論僅供參考）</h2>
+<p><strong>基調</strong>：D4 上升落射手座（給定分鐘下）——物質舒適的基調偏「往外開展、跟遠方或高處有關、樂觀擴張」。</p>
+<ul>
+<li><strong>線A（家產盤內部視角）</strong>：家產盤自己的「第4宮主」是木星，落家產盤第5宮；金星（享受、美感之星）落家產盤第5宮（才華享樂區）——代表<strong>你對「家」的想像偏向舒適、有美感、能享受的空間。</strong></li>
+<li><strong>線B（本命帶入視角）</strong>：你本命的「第4宮主水星」（也就是你的命主星），帶著家與根的職責落進家產盤的<strong>第9宮（遠方、福報、高處）</strong>——這給了一個有意思的訊號：<strong>你的「家與根」可能和「遠方、外地、更高的環境」牽連</strong>（例如在外地／異鄉安家、或家的意義跟學問信仰有關）。</li>
+</ul>
+<p><strong>綜合判斷（留餘地）</strong>：不動產與安定感這條線帶「遠方／外地／舒適美感」的色彩，但因為家產盤邊界敏感，具體置產時機與宮位不宜下定論——留待你有更精確的出生時間或搭配大運再細看。</p>
+<hr />
+<h2>D5 權力盤（穩定，可正常使用）</h2>
+<p><strong>基調</strong>：D5 上升落射手座（穩定）——權威與創造力的基調偏「有理想、往高處、帶教育與信念色彩」。</p>
+<ul>
+<li><strong>線A（權力盤內部視角）</strong>：<strong>水星（你的命主星）在權力盤入自己的家（雙子座自廟）、落權力盤第7宮</strong>——這是很不錯的訊號：<strong>你的「創造力、影響力、把想法變成有份量的東西」的能力，在權力盤裡是強的、有主場的。</strong> 木星也落權力盤第7宮，太陽落權力盤第4宮。</li>
+<li><strong>線B（本命帶入視角）</strong>：本命太陽（權威之星）落權力盤第4宮（根基、內在），本命木星落權力盤第7宮——代表你的權威感有「內在信念」作底、也透過「與人合作、面對公眾」展現。</li>
+</ul>
+<p><strong>綜合判斷</strong>：權力盤穩定且訊號偏正——<strong>你的創造力與影響力有真材實料（水星自廟在權力盤第7宮），適合往「用專業與表達去影響一群人」的方向發揮。</strong></p>
+<p>=== Step 2 分盤交叉概述完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 08</div>
+    <h2>第四部分A：宮位診斷（1-6宮）</h2>
+  </div>
+  <h1>十二宮診斷（上半：第1宮～第6宮）</h1>
+<blockquote>
+<p><strong>怎麼讀</strong>：每個宮位就像你人生的一個「房間」。我會看四件事——這個房間的「管家」（宮主）去哪了、狀態好不好；房間裡住了誰（宮內行星）；有誰在門口盯著看（相位）；以及房間的「硬體」好不好（只在極端值時提）。</p>
+</blockquote>
+<hr />
+<p>——— 第1宮（代表：你自己、身體、外貌、個性、人生大方向）雙子座 ———【重點宮】</p>
+<p>【狀況概述】</p>
+<p>第1宮就是「你這個人」。你的管家是<strong>水星（溝通、思考、學習、技能）</strong>，它跑到了<strong>第9宮（運氣、貴人、遠方、高等學問）</strong>去。這句話本身就是你的人生設定：<strong>你這個人的重心，天生放在「學習、求知、往遠方走、遇貴人」上面</strong>——你是靠腦子和一張嘴定義自己的人。管家狀態中等（客居敵方位、力量98.7%），但門口有一位很重要的守護者——<strong>木星（智慧、貴人）從第5宮回頭照看你的第1宮</strong>，等於暗中有一層「智慧與福氣的保護罩」罩著你這個人。所以你這個房間屬「經理人（有貴人加持）模式」：不是天生強勢主宰型，但有智慧護體、方向清楚。</p>
+<p>上升落在「Ardra」這個星宿（羅睺主管），這替你的個性加了一層色彩：<strong>求知慾強、腦子轉得快、對現狀不易滿足、帶點打破砂鍋問到底的鑽研勁</strong>。你不是安於現狀的人。</p>
+<p>【事件關聯】你的命主星（管第1宮）正走 17 年大運（水星大運，2025–2042，約 31–48 歲）。這段時期的主軸就是「<strong>你親自把自己重新定義、往專業與更高的位置推</strong>」。按判定它是「困難期＝自我磨練」（力量差一點及格＋緊貼火星），推導依據：水星＝交易者身份、敵方位、Shadbala 98.7%、落第9宮吉路，正面1條／負面2條→困難期。翻成人話：<strong>這 17 年主動權在你手上，但沒有白吃的午餐——你會透過「進修、專業化、跟貴人／遠方連結」一步步把自己的份量掙出來，過程要拚。</strong></p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>水星（你自己、學習）→去了第9宮（求知、遠方、貴人）</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>無（空宮，能量往外投射到第9宮）</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>木星（智慧、貴人）從第5宮照看＝保護罩</td>
+</tr>
+<tr>
+<td>分盤</td>
+<td>命主星在權力盤（D5）自廟——你的影響力有真材實料</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第2宮（代表：金錢存款、家庭、說話、飲食、累積的資產）巨蟹座 ———</p>
+<p>【狀況概述】</p>
+<p>第2宮是你的「錢庫與家」。管家是<strong>月亮（情緒、母親、大眾）</strong>，它跑到了<strong>第5宮（才華、戀愛、創意、投機）</strong>。這代表：<strong>你的錢和你的「才華、創意、討喜的事」是同一條線上的</strong>——你比較適合靠「有創意、跟人有關、討喜」的方式進帳與累積，而不是死板的勞力或純守成。管家月亮偏弱（力量最後一名、虧月續航短），所以你的財庫「進得來，但要靠節奏和紀律守住」——熱情來得快去得快，容易一陣一陣，需要制度幫你穩住存款。</p>
+<p>好消息是月亮落在第5宮這個吉位、又和木星同宮（象王格局），代表你「靠腦子和魅力賺錢、把才華變現」的底子是有的。第2宮硬體屬中上，不是弱庫。整體屬「經理人模式」：能運作，但要主動經營、別靠感覺理財。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>月亮（錢與家）→去了第5宮（才華、創意、戀愛）</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>無</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>無明顯行星相位（能量集中在第5宮的月亮身上）</td>
+</tr>
+<tr>
+<td>分盤</td>
+<td>財路帶「創意變現」色彩（月亮＝事業指示星在5宮）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第3宮（代表：溝通、勇氣、技能、兄弟姊妹、短程移動、自媒體）獅子座 ———</p>
+<p>【狀況概述】</p>
+<p>第3宮管你的「本事、膽識、表達」。管家是<strong>太陽（你全盤最強的王牌）</strong>，它坐鎮在<strong>第10宮（事業、名聲、地位）</strong>——這是一組很漂亮的連結：<strong>你「動手的技能、溝通與膽識」直接餵養你的事業與名聲</strong>。你靠「一技之長＋敢開口＋敢站台」出頭，這條線前面太陽的體檢已經講得很清楚。</p>
+<p>更值得一提的是硬體：<strong>第3宮的硬體是「溢出」等級（第3宮(獅子)SAV=34，全盤數一數二高）</strong>——代表你在「表達、學習新技能、內容產出、動手做」這塊天生資源充裕、幾乎自動運轉。而且門口有第9宮的三顆星（火星、水星、土星）一起照過來，等於「膽識與技能」這件事被大量能量灌注。你要善用的就是<strong>「把本事做出來、講出來、放上台面」</strong>——這是你天生就順的一塊。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>太陽（技能、膽識）→去了第10宮（事業、名聲）＝最強連結</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>無</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>火星、水星、土星（第9宮三星）一起照射＝大量能量灌注</td>
+</tr>
+<tr>
+<td>硬件</td>
+<td>第3宮(Le)SAV=34（溢出，資源充裕）</td>
+</tr>
+</tbody>
+</table>
+<p>——— 第4宮（代表：家、母親、內心安定、不動產、車、學歷根基）處女座 ———【重點宮】</p>
+<p>【狀況概述】</p>
+<p>第4宮是你的「內心的家」——它管你的定心感、母親、學歷根基、不動產。管家一樣是<strong>水星（你的命主星）</strong>，一樣跑去了<strong>第9宮（遠方、福報、高學問）</strong>。這給了一個很清楚的訊號：<strong>你的「安定感」和「根」，跟「學問、往遠方走、更高的環境」綁在一起</strong>——你可能是在「不斷學習、甚至到外地／異鄉」的過程裡才慢慢找到自己的定心點，而不是待在原地就安心的人。</p>
+<p>門口有兩位訪客在盯著：<strong>太陽（父親、權威）從第10宮照過來、火星（行動、火氣）從第9宮照過來</strong>。太陽照第4宮＝父親／權威在你的家庭與內在份量重、也帶來一種「要向上、要有成就才安心」的推力；火星照第4宮＝家裡或內心偶爾有點坐不住、有股躁動或要往外衝的能量。整體是「經理人（相位吉凶並存）模式」：能運作，但內在安定需要你主動去經營。</p>
+<p>【事件關聯】你的第4宮（學歷根基）由水星管、落第9宮（高等學問），而你的求學打底期正好落在<strong>土星大運（2006–2025，約12–31歲）</strong>——那 17 年由你最穩、又坐鎮第9宮學問位的土星掌管，機械判定為「正面期」（推導依據：土星＝盟友、自廟、Shadbala 115%、落第9宮、同座加持，正面4條／負面0條）。翻成人話：<strong>你的學歷與專業底子，是在一段結構穩固、適合埋頭深耕的時期打下來的</strong>——這段打底的紮實，是你今天的本錢。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>水星（家、根、學歷）→去了第9宮（遠方、高學問）</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>無</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>太陽（父親/權威）＋火星（躁動）＝安定需主動經營</td>
+</tr>
+<tr>
+<td>分盤</td>
+<td>D4 邊界敏感，置產結論僅參考；帶「遠方/外地安家」色彩</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第5宮（代表：戀愛、子女、才華創意、玩樂、投機、智力學習）天秤座 ———【重點宮】</p>
+<p>【狀況概述】</p>
+<p>第5宮是你這張盤<strong>最精彩的一個房間</strong>。管家是<strong>金星（你品質最好的星）</strong>，它跑到第11宮（收入、人脈）去發光；房間裡還住著兩位貴客——<strong>月亮（情緒、才思）和木星（智慧、貴人）同住第5宮（象王格局）</strong>；門口金星回頭照看。一個「強管家＋兩位吉星房客＋吉星相位」的房間，就是<strong>「創始人模式」</strong>——這代表你在<strong>才華、創意、學習、戀愛、玩樂、乃至投資眼光</strong>這一整塊，天生資源豐沛、能自主發揮。</p>
+<p>這個房間也是你多個好格局的交會點：象王格局（學習力、悟性）在這裡、王者格局（才華接地位）的一端在這裡、你的外在形象點（AL）也落在這裡。所以<strong>世人看你，會覺得你是個「有才、聰明、討喜、有創意」的人</strong>——這個形象和你真實的自己是吻合的（後面社交板塊會展開）。</p>
+<p>【事件關聯】第5宮同時管「戀愛與子女」。木星（也管你的第7宮婚姻）就住在這裡——把「戀愛創意」和「婚姻」接在一起。你未來的<strong>金星大運（2049–2069，約55–75歲）</strong>會強力點亮第5宮（金星正是第5宮主，又強又同座加持）——那是一段你的才華、關係、享受都可能真正開花的長達20年的時期（這是背景趨勢，具體時點另看小運）。而更近的、與才華創意有關的推進，落在當前水星大運裡（水星＝智力之星當家）。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>金星（才華、戀愛）→去了第11宮（收入、人脈）＝把才華變收入</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>月亮＋木星（象王格局）＋外在形象點AL</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>金星回照＝加持</td>
+</tr>
+<tr>
+<td>分盤</td>
+<td>D5（權力盤）穩定且偏正，創造力有真材實料</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第6宮（代表：工作競爭、健康疾病、債務、服務、部屬、對手）天蠍座 ———</p>
+<p>【狀況概述】</p>
+<p>第6宮管你的「戰場」——競爭、健康、服務、債務。管家是<strong>火星（行動、競爭）</strong>，跑到第9宮（往有意義、有知識含量的方向去打）；房間裡住著<strong>羅睺（放大器）</strong>，把「競爭與服務」放到最大——前面講過，這是<strong>「戰將位」</strong>，你擅長在麻煩堆、競爭場、需要解決問題的地方殺出來。門口還有<strong>土星（耐力）和計都（抽離）</strong>在照。</p>
+<p>要提醒的是健康面（細節留給健康板塊）：火星管第6宮又和羅睺同宮，代表<strong>要留意「發炎上火、意外碰撞、過度操勞」這類火氣型的健康訊號</strong>；第6宮也是「你能靠競爭力翻盤」的宮，火氣旺其實也給了你很強的恢復力與抗壓性。整體是「主動應戰型」的房間——不是弱，是「熱」。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>火星（競爭、行動）→去了第9宮（把較勁導向意義）</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>羅睺（放大競爭/服務）＝戰將位</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>土星（耐力）＋計都（抽離）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>宮位聯動掃描：Parivartana（互溶）</h2>
+<p>系統掃描全盤宮主互換關係——<strong>本盤無 Parivartana（互溶）</strong>，也就是沒有兩個宮位被「強制綁在一起」的雙向通道。你的宮位能量比較「各司其職」，不會出現兩個領域福禍完全綁死的狀況。</p>
+<p>（第7～12宮見 p4b。）</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 09</div>
+    <h2>第四部分B：宮位診斷（7-12宮）</h2>
+  </div>
+  <h1>十二宮診斷（下半：第7宮～第12宮）</h1>
+<p>——— 第7宮（代表：配偶婚姻、合夥人、公開的對手、客戶、合約）射手座 ———【重點宮】</p>
+<p>【狀況概述】</p>
+<p>第7宮是你的「婚姻與合夥」的房間。這個房間有幾個很特別的地方，值得慢慢講。</p>
+<p>先看硬體——<strong>第7宮的硬體是全盤最高的「溢出」等級（第7宮(射手)SAV=36，十二宮之冠）</strong>。翻成人話：<strong>你婚姻與合夥這塊的「基礎建設」非常好、資源非常充裕</strong>，這是很難得的加分。再看管家——<strong>管家是木星（智慧、貴人；也是你事業宮的管家）</strong>，它跑到了第5宮（戀愛、才華）。前面體檢過：木星本命偏弱、逆行，帶「延遲、要走第二次才成」的紋理，但在 D9（婚姻品質盤）竟然回到自己家、內裡很強。<strong>合起來就是一句話：你的婚姻「硬體頂配、底子扎實，但落地偏慢、可能要轉個彎或晚一點才穩」。</strong></p>
+<p>還有一個特別處：<strong>第7宮是空宮、而且沒有任何行星從門口照它</strong>——這代表婚姻這件事幾乎完全交給「管家木星＋配偶指示星金星（強、在第11宮人脈位）」來決定，外力干擾少、比較單純。加上你的另一半指北星金星又強又穩、落在人脈社群位——<strong>配偶品質好、多半從社交圈／朋友圈認識</strong>，這條線是實打實的好。</p>
+<p>【障礙星提醒】對雙子座上升來說，第7宮剛好也是「障礙宮（Badhaka）」，障礙星是木星。翻成人話：<strong>婚姻／合夥這塊天生帶一點「好事多磨」的紋理</strong>——不是不好，是「過程容易有莫名的拖延、轉折、要多繞一下」。搭配木星「延遲、二次才成」的節奏一起看，訊號一致：<strong>慢一點、繞一下，但成了就穩、底子是真的。</strong></p>
+<p>【事件關聯】婚姻是「過程」不是「瞬間」，我分開三軸看：領域（第7宮、金星DK、第5宮木星都被點名，關係領域是活的）、形態（木星延遲＋D9內裡強＝晚成而穩）、時間（背景在當前水星大運，木星或金星的小運窗口是關鍵推進點；未來金星大運2049起更是強力點亮）。<strong>結論：方向與品質都好，節奏偏晚成——別急，走窄門的東西反而扎實。</strong>（具體月級時機建議另跑感情專項 vedic-love。）</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>木星（婚姻、貴人）→去了第5宮（戀愛、才華），延遲型、D9內裡強</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>無（外力干擾少）</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>無（婚姻由管家＋配偶指標主導）</td>
+</tr>
+<tr>
+<td>硬件</td>
+<td>第7宮(Sg)SAV=36（全盤最高，溢出）＝婚姻基礎建設極佳</td>
+</tr>
+<tr>
+<td>障礙</td>
+<td>第7宮＝障礙宮，障礙星木星＝好事多磨</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第8宮（代表：突發變故、危機、他人的錢如遺產保險投資、深度轉化、身心隱疾）摩羯座 ———</p>
+<p>【狀況概述】</p>
+<p>第8宮管「突變、危機、深度、他人的錢」。管家是<strong>土星（你最穩的底盤星）</strong>，跑到第9宮（福報、學問）。房間是空的、也無行星照射——這其實是好事：<strong>第8宮空著、又沒有凶星進駐照射，代表你人生的「突發災變」頻率相對低</strong>（房間空、賊不進空屋，這叫「防火牆」效果）。</p>
+<p>更好的是，管家土星本身又強又入自己家——<strong>代表你「處理危機、鑽研艱深、管理別人資源」的能力其實很強</strong>。土星把第8宮的「深度轉化」能力接到了第9宮的「學問」——這給了你一條很有價值的暗線：<strong>你適合做需要「鑽深、處理複雜或隱藏事務」的專業</strong>，例如研究、金融／保險、審計、風險管理、心理、危機處理這類「別人搞不定、你能沉下去搞定」的領域。第8宮強又不亂，是難得的配置。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>土星（危機、深度）→去了第9宮（學問、福報），本身強</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>無（突變頻率低＝防火牆）</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>無</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第9宮（代表：運氣福報、貴人與老師、父親、遠方、信仰、高等教育、正義）水瓶座 ———【重點宮】</p>
+<p>【狀況概述】</p>
+<p>第9宮是你這張盤<strong>能量最集中、最核心的房間</strong>——你人生的「主戲」很大一部分在這裡上演。為什麼？因為這個房間<strong>同時住了三顆星：火星（你的靈魂指北星）、水星（你自己／命主星）、土星（你最穩的底盤）</strong>，而且<strong>管家土星就是坐鎮在自己家（第9宮的水瓶座正是土星的家）</strong>，門口還有木星（貴人、智慧）從第5宮回頭祝福。這種「強管家在自己家＋三星聚會＋吉星加持」的房間，就是<strong>滿分的「創始人模式」</strong>。</p>
+<p>翻成人話：<strong>「求知、貴人與老師、遠方與出國、信仰與人生意義、高等專業」這一整塊，是你人生的主場、你最強的先天資本。</strong> 你這個人（水星）、你的靈魂驅動（火星）、你的紀律底盤（土星）全部押在「往高處、往遠方、往更深的學問走」這件事上。你天生就該是個「終身學習、越走越高、有貴人相助、可能跟遠方或體制／高等專業有關」的人。這也解釋了為什麼前面每顆星都一直指向第9宮——因為你的命確實把重心放在這裡。</p>
+<p>【事件關聯】第9宮的能量在兩段大運被連續點亮：<strong>土星大運（2006–2025）</strong>——土星就在第9宮、又是9宮主，那段是你「打學問底子、遇師長、建立福報」的正面期；<strong>接著的水星大運（2025–2042）</strong>——水星也在第9宮，等於<strong>第9宮的能量從「打底」接棒到「你親自去發揮」</strong>：這 17 年很適合進修、考取更高的專業資格、往遠方或跨域發展、與貴人深度連結。方向非常清楚。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>土星（福報、學問）→坐鎮自己家第9宮，本身最強</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>火星（靈魂）＋水星（自己）＋土星（底盤）＝三星聚會</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>木星（貴人、智慧）從第5宮祝福</td>
+</tr>
+<tr>
+<td>分盤</td>
+<td>多顆星在D5/D10均落高處，呼應「靠專業往高走」</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第10宮（代表：事業、社會地位、名聲、老闆、公眾成就）雙魚座 ———【重點宮】</p>
+<p>【狀況概述】</p>
+<p>第10宮是你的「事業與名聲」的房間。這個房間住著一位重量級房客——<strong>太陽（你全盤最強的王牌），而且它就在自己「主場作戰」的位置（太陽天生在第10宮最強）</strong>。這是你事業最大的本錢：<strong>你有成為「被看見、有權威、靠專業掛招牌」的那個人的底子</strong>，靠自我驅動＋公開露臉＋一技之長往上走。房間裡沒有別的星干擾，太陽一枝獨秀、乾淨又強。</p>
+<p>管家是<strong>木星（也是你婚姻宮的管家）</strong>，跑去了第5宮（才華、創意、教學、子女）——這把你的事業和「創意、教學、跟年輕人或有趣內容有關」的味道接在一起，但也帶著木星「延遲、要走第二次才成」的節奏。好消息是前面 D9 審計發現：<strong>木星在品質盤裡回到自己家、而且它的果實最終正好落在第10宮</strong>——意思是<strong>你的事業就算前期慢、要轉彎，最後會在「事業地位」這個領域結出扎實的果</strong>。</p>
+<p>【事件關聯】此刻你的事業宮正被「雙重過運」點亮——<strong>土星與木星目前同時對你的第10宮形成過運影響（2026年當下）</strong>，這在傳統上是「事業容易有推進、被看見、格局變動」的訊號背景。搭配當前水星大運（你親自掌舵的17年），<strong>這幾年是你事業「往上調整、爭取更高位置或轉型」的背景趨勢期</strong>（大運級是長期底色，具體月級時點要配小運與過運換座時間看，別盯單一月份）。太陽這張強牌隨時可用——能掛名、能站台、能靠專業說話的場合，別退。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>木星（事業）→去了第5宮（創意、教學），延遲型、D9果實落回第10宮</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>太陽（最強王牌，主場滿分）＝靠專業與名聲出頭</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>無其他干擾（太陽一枝獨秀）</td>
+</tr>
+<tr>
+<td>分盤</td>
+<td>D10 邊界敏感（結論留餘地）；當前雙重過運點亮第10宮</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第11宮（代表：收入獲利、人脈社群、願望達成、大哥級朋友）牡羊座 ———</p>
+<p>【狀況概述】</p>
+<p>第11宮是你的「收入與人脈」的房間。住著一位好房客——<strong>金星（你品質最好的星、又是配偶指北星）</strong>，強又穩。這代表：<strong>你的收入與人脈這塊，天生帶有「靠關係、靠魅力、靠討喜／有美感的東西」進帳的色彩，而且品質好。</strong> 管家火星（行動、拚勁）跑到第9宮，把「拚收入、達成願望」的動力導向有意義、有知識含量的方向。</p>
+<p>門口有三位訪客照著：<strong>月亮（管你的錢庫）、木星（貴人）、土星（耐力）</strong>——月亮把你的錢庫（第2宮）和收入（第11宮）串起來（財源與存款連動），木星帶來貴人與擴張，土星帶來穩定與長期性。整體是「有強房客＋多方吉星加持」的好房間：<strong>你的收入來源多元、有人脈助力，適合把「關係與才華」變成錢。</strong> 也因為配偶指北星在這裡——<strong>你很可能在人脈圈、朋友聚會、社群活動裡遇到另一半。</strong></p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>火星（拚收入）→去了第9宮（往有意義的方向拚）</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>金星（品質最好＋配偶指標）＝靠關係與魅力進帳</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>月亮（錢庫連動）＋木星（貴人）＋土星（穩定）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>——— 第12宮（代表：花費損耗、海外、獨處、睡眠、靈修、隱居、放下、醫院／異地）金牛座 ———</p>
+<p>【狀況概述】</p>
+<p>第12宮管「花費、遠方、放下、靈性」。住著<strong>計都（抽離、靈性之星）</strong>——這是計都的「本命歸宿」，代表你天生有一股往靈性、獨處、遠方、放下的傾向（前面體檢過，這股力量背後有很強的金星撐著，是「有質感的抽離」而不是逃避）。管家是<strong>金星</strong>，跑到第11宮（人脈、收入）——第12宮主落第11宮是不錯的配置：<strong>你的花費／付出，往往能繞一圈變成人脈或收益</strong>（花在對的地方、花得有回報）。門口有火星、羅睺照著，帶一點「花費或遠方事務上要留意衝動」的色彩。</p>
+<p>整體訊號：<strong>你和「海外、靈修、幕後、放下」這條線有緣</strong>——可能表現為對出國／異地有興趣、對心靈成長有需求、或適合做一些「幕後、獨立作業」的事。要留意的就是第12宮的老課題：<strong>花費與精力的節制</strong>，別讓錢和心在不知不覺中流掉。</p>
+<table>
+<thead>
+<tr>
+<th>維度</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管家</td>
+<td>金星（花費、靈性）→去了第11宮（花費繞成人脈/收益）</td>
+</tr>
+<tr>
+<td>住客</td>
+<td>計都（靈性、放下）＝本命歸宿，往海外/靈修有緣</td>
+</tr>
+<tr>
+<td>相位</td>
+<td>火星＋羅睺（花費/遠方事務留意衝動）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>宮位聯動小結：障礙星（Badhaka）審計</h2>
+<p>你是雙子座上升（變動星座），障礙宮落在<strong>第7宮（婚姻／合夥）</strong>，障礙星是<strong>木星（在第5宮）</strong>。翻成人話：<strong>你人生比較容易出現「莫名阻力、好事多磨」的領域，集中在「婚姻與合夥」</strong>，而這些阻力常透過「第5宮的事（戀愛、子女、創意、投機）」以及木星的大運時段浮現。這和木星本身「延遲、二次才成」的節奏完全一致——<strong>不是走不通，是要多繞一下、晚一點；繞過去了反而穩。</strong> 這只是一個「阻力來源標記」，不是壞事定論，別過度放大。</p>
+<h2>十二宮全覆蓋自查</h2>
+<p>✅第1宮 ✅第2宮 ✅第3宮 ✅第4宮 ✅第5宮 ✅第6宮 ✅第7宮 ✅第8宮 ✅第9宮 ✅第10宮 ✅第11宮 ✅第12宮</p>
+<p>=== Step 3 十二宮診斷完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 10</div>
+    <h2>第五部分：人生架構總結</h2>
+  </div>
+  <h1>十大人生板塊（上：人格・財富・事業・感情・健康）</h1>
+<blockquote>
+<p>這一部分是整份報告的「人話總結」。前面的行星、宮位、分盤是打底的推導，這裡把它們合起來，講給你聽。</p>
+</blockquote>
+<hr />
+<h2>板塊1：人格核心——你是誰</h2>
+<p>你是一個<strong>雙子座上升</strong>的人——這是你面對世界的方式：<strong>好奇、腦子轉得快、靈活、愛溝通、閒不下來、對現狀不容易滿足</strong>。你天生是靠「頭腦、嘴巴、一雙手」過日子的人，不是靠蠻力。你的上升落在一個叫 Ardra（羅睺主管）的星宿，又給你加了一層「打破砂鍋問到底、想把事情徹底搞懂」的鑽研勁。所以第一句話先給你：<strong>你是個天生的「求知者」，你這輩子最舒服的狀態，就是一直在學、一直在弄懂新東西。</strong></p>
+<p>你這個人真正的驅動力有兩層。<strong>外層是太陽（代表：自我核心、名聲地位、父親、老闆、權威）——它是你全盤最強的一顆星，坐在你的事業與名聲宮（第10宮）。</strong> 這代表你骨子裡有一股「想被看見、想做出點名堂、想在某個領域成為那個被認可的人」的勁。你不是甘於當背景板的人，你有站到台前的底氣，也應該去站。<strong>內層是月亮（代表：內心、情緒、日常心理）——它落在你的才華與戀愛宮（第5宮），重關係、愛和諧、享受美好的事物</strong>；但它偏弱、又是虧月（情緒續航偏短、來得快去得快）。把兩層合起來的意思是：<strong>你外在的行動力和企圖心，其實比你內在的情緒續航還要強</strong>——你很能衝、很能學，但內心需要一點外在的節奏和支持來幫你穩住，別讓熱情三分鐘熱度。</p>
+<p>還有一條更深的線：你的<strong>靈魂指北星是火星（代表：行動、意義、往高處走的驅動），它落在第9宮（代表：運氣、貴人、遠方、信仰、高等學問）。</strong> 這說明你靈魂深處真正嚮往的，<strong>不是賺錢享樂就滿足，而是「活得有道理、搞懂更高的答案、往更高更遠的地方走」</strong>。這股「想要意義」的力量，會在你人生後半段越來越明顯，成為推你往前的真正引擎。</p>
+<p>好消息是：<strong>你這個人「表裡相當一致」</strong>——你給別人的第一印象（好奇、聰明、討喜、愛聊），和你心裡真正裝的東西（想學、想懂、想活得有意義），基本上是同一個人，沒有戴著面具過日子的內耗。這是一種難得的自在：<strong>你不必假裝成別人，做你自己就是你最好的樣子。</strong></p>
+<hr />
+<h2>板塊2：財富潛力——錢從哪來</h2>
+<p>先講你的財路長什麼樣子。你的錢庫管家是<strong>月亮（代表：錢、家、日常）</strong>，它跑到了你的<strong>才華與創意宮（第5宮）</strong>；而你最會賺錢的宮（第11宮收入）裡住著<strong>金星（代表：愛情、美感、社交、討喜的事物、你品質最好的一顆星）</strong>。把這兩件事連起來，你的財富劇本就很清楚了：<strong>你的錢，天生偏向靠「有創意的、討人喜歡的、跟人有關的、有美感的」東西賺來，而不是靠死板的勞力或純守成。</strong> 具體可能長成很多樣子——靠專業與表達收費、靠作品或內容、靠審美與設計、靠人脈與關係經營、靠有創意的投資眼光——重點是那個「味道」：<strong>你賺錢的方式跟『腦子＋魅力＋討喜』綁在一起。</strong></p>
+<p>再講一個很實在的加分項：你的<strong>收入宮（第11宮）品質很好</strong>——住在裡面的金星又強又穩，門口還有月亮（把你的存款和收入串起來，錢進得來也存得住的連動）、木星（貴人、擴張）、土星（穩定、長期）一起加持。翻成人話：<strong>你的收入來源會偏多元、有貴人與人脈的助力，而且有把收入變成長期資產的底子。</strong> 這是你財富上最扎實的一塊。</p>
+<p>但要對你老實說一個制約：<strong>你的錢庫管家月亮偏弱、又是虧月（續航短）</strong>——這代表你「賺」的能力不錯，但「守」的紀律需要刻意練。你的財務容易「一陣一陣」：心情好、狀態好的時候進帳漂亮，但沒有制度幫你固定下來的話，錢也容易一陣一陣地流走。所以你財富上的關鍵功課不是「會不會賺」，而是<strong>「幫自己建立固定的理財節奏」</strong>——例如強制儲蓄、自動化投資、把收入分流管理，用制度補上情緒的不穩定。</p>
+<p>時間上，你正走的水星大運（2025–2042）是你「靠專業與自己的本事去掙錢」的主場（推導依據：命主星水星當家、落第9宮吉位，困難期＝要靠自己拚）；而真正的財富與享受高峰，會落在<strong>55歲後的金星大運（2049–2069，正面期）</strong>——那時你品質最好的金星當家，才華、關係、財路一起發光（推導依據：金星＝盟友、友方＋同座加持、力量138%，正面4條／負面0條→正面期）。這是背景趨勢，別盯著某個月份。</p>
+<hr />
+<h2>板塊3：事業方向——適合做什麼</h2>
+<p>先給你一個重要提醒：<strong>盤面能給你的是「事業的特徵」，不是一個具體的職業名稱。</strong> 因為從「特徵」到「某個行業」是一對幾十的對應——講一個行業名字反而是假精確。所以我幫你把你的事業特徵拆成幾個面向，你拿去對照現在做的、或想做的事，只要命中這幾個特徵，你就是在對的賽道上。</p>
+<p><strong>特徵一·內容性質（你適合處理什麼）</strong>：你的事業和「<strong>知識、專業、把複雜的東西搞懂並講清楚、解決有難度的問題</strong>」深度綁定。這來自兩點：你的事業宮主木星跑到了才華與教學宮（第5宮），把事業和「創意、教學、跟年輕人或有趣內容有關」接在一起；而你的事業盤（D10）和第8宮的配置都指向「<strong>能鑽深、抓要害、處理複雜或隱藏事務</strong>」的能力（例如研究、分析、金融／保險、風險與危機處理、專業顧問、心理這類「別人搞不定、你能沉下去搞定」的事）。</p>
+<p><strong>特徵二·推進方式（你怎麼發揮）</strong>：你是<strong>「鑽研型＋表達型」的混合</strong>——你靠「先想深、再講清楚」出頭。你的命主星水星（溝通、智識）在你的事業盤裡落在正中央的事業位、又在權力盤裡入自己的家，代表<strong>「用專業與表達去影響一群人」是你登台的那台車</strong>。同時你最強的太陽坐鎮事業宮——<strong>你適合、也應該掛名、站台、當那個「靠專業說話、被看見」的人</strong>，別躲幕後。</p>
+<p><strong>特徵三·組織形態與變現</strong>：你偏向靠「個人專業品牌＋知識含量」變現，帶一點「跟遠方／跨域／體制或高等專業有關」的色彩（來自你一大票星集中在第9宮遠方學問位）。<strong>這裡要排除的，不是某個行業，而是某種特徵</strong>：那種「長期單調重複、沒有學習成長、也沒有表達出口」的位置，會讓你的太陽（想被看見）和水星（想學想講）憋壞——你會待不住。</p>
+<p><strong>時間上怎麼走</strong>：你現在的水星大運（2025–2042）是「你親自把自己的位置掙出來」的自我磨練期，過程要拚但主動權在你（推導依據：命主星當家、落第9宮吉、困難期）。這段裡有兩個特別好的推進小窗要記住：<strong>2028年11月～2031年9月的金星小運</strong>（品質最好的金星當副手，困境中有轉機——適合往上調整、談成好的合作或跳板）、以及<strong>2037年7月～2039年10月的木星小運</strong>（事業宮主當副手，事業與地位成熟、但走窄門的窗口）。你的事業就算前期慢、要轉彎，方向是對的——<strong>你的事業果實，在品質盤裡最終正好落在「事業地位」這個領域結成，熬得住就穩。</strong></p>
+<hr />
+<h2>板塊4：感情／婚姻——何時遇到對的人</h2>
+<p>先給你一個定調的好消息，再講需要耐心的地方。</p>
+<p><strong>你的另一半「硬體品質」是這張盤裡數一數二好的。</strong> 這來自三個實打實的訊號：第一，你的<strong>配偶指北星是金星（代表：愛情、美感、討喜、溫柔），它又強又穩（力量全盤第二、又有同座加持）</strong>，落在你的<strong>人脈與社群宮（第11宮）</strong>——這強烈暗示：<strong>你另一半的素質好，而且你們很可能是在「社交圈、朋友介紹、社群或共同的團體活動」裡認識的</strong>，不是硬碰硬相親出來的。第二，你的<strong>婚姻宮（第7宮）硬體是全盤最高的『溢出』等級（第7宮SAV=36）</strong>——婚姻的「基礎建設」非常好。第三，你的婚姻宮空著、又沒有任何凶星從門口干擾——<strong>代表你的婚姻相對單純、外力破壞少。</strong></p>
+<p>那對方大概是什麼樣的人？這裡要先講清楚：<strong>盤面只能勾出對方的「氣質輪廓」，勾不出具體是誰——那得你自己去認、去感受。</strong> 就氣質特徵來說，你的配偶指北星落在牡羊座（火象、主動、少年感），最可能的主形態是：<strong>一個有活力、獨立、主動、帶點衝勁和少年氣、行動派的人</strong>（次要的可能性是偏審美型、討喜型的人，但主訊號是「有活力、主動」這一面）。加上你的婚姻伴侶點（UL）落在第10宮的雙魚座——<strong>對方可能和「事業場合、專業環境」有關，或帶點溫柔、有理想、藝術或助人色彩的氣質。</strong> 你們的緣分裡，「一個主動有勁、一個溫柔有理想」的組合味道蠻明顯。</p>
+<p>需要耐心的地方也講清楚。你的<strong>婚姻宮主是木星（代表：智慧、貴人，也管你事業）</strong>，它本命偏弱、逆行，帶著「延遲、要走第二次、繞一下才成」的節奏；而且對雙子上升來說，第7宮剛好是「障礙宮」，天生帶一點<strong>「好事多磨」</strong>的紋理。<strong>合起來就是：你的婚姻方向對、品質好，但落地偏晚成、過程可能要繞一下、或不是一次到位。</strong> 這不是壞事——前面 D9 品質盤發現，木星在品質盤裡其實回到了自己的家、內裡很強，意思是<strong>「走過那道窄門之後，感情的底子是扎實的、是真的」</strong>。給你的建議就一句：<strong>別急著在早期硬求一個結果，你的感情是『慢工出細活』型的，晚一點、繞一下遇到的，反而更穩。</strong></p>
+<p>時間上，關係領域比較被點亮的窗口，落在<strong>2028年11月～2031年9月（金星小運，你最好的星當副手）</strong>與<strong>2037年7月～2039年10月（木星小運，婚姻宮主當副手、走窄門的成熟窗口）</strong>這兩段（推導依據見速查表）；而55歲後的金星大運更是感情與享受全面開花的長背景。這些是「階段窗口」，具體到月要再配三級運看，別當成精準日期。</p>
+<hr />
+<h2>板塊5：健康提醒——注意什麼</h2>
+<p>先說原則：這一段是講「預防」，不是嚇你。你的健康盤沒有大凶配置，土星七年半（Sade Sati，一段情緒與壓力較重的過運）目前也沒有啟動——所以整體是「注意保養」而非「拉警報」。</p>
+<p><strong>第一個要留意的是「火氣型」的健康訊號。</strong> 你的疾病宮（第6宮）由<strong>火星（代表：火氣、發炎、意外碰撞、手術）掌管，裡面又住著羅睺（放大器）</strong>——這個組合把「發炎、上火、意外撞傷、過度操勞」這幾件事的機率放大了一點。翻成生活建議就是：<strong>別硬撐、別長期熬、運動時注意防護避免碰撞、有發炎徵兆（喉嚨、皮膚、腸胃上火）早處理別拖。</strong> 好的一面是這也給了你不錯的恢復力與抗壓性，但前提是你別一直把油門踩到底。</p>
+<p><strong>第二個是「神經與呼吸／表達系統」。</strong> 你是雙子座上升、命主星是水星（代表：神經、雙手、呼吸、溝通），而水星又緊貼火星（急躁、衝勁）——雙子座在身體上對應「肺、雙手、神經系統」。所以要留意的是<strong>「思慮過度、緊張焦慮、講話太快太衝、呼吸道」</strong>這一塊。當你壓力大時，身體最先抗議的可能是「睡不好、神經緊、腸胃或呼吸」。對策很簡單：<strong>規律的作息與呼吸／冥想練習，對你特別有效</strong>（剛好也呼應你盤裡計都在第12宮的靈性線——靜心對你不只是修行，也是保養）。</p>
+<p><strong>第三個是「情緒與消化／作息」。</strong> 你的月亮（代表：情緒、消化、體液、睡眠）偏弱、又是虧月（續航短、情緒起伏快）——這代表你的<strong>消化系統、睡眠節奏、情緒穩定度比較吃「規律」</strong>。建議：<strong>固定的三餐與睡眠時間，對你不是小事，是健康的地基。</strong> 情緒來得快去得快本身不壞，但別讓不規律的生活放大它。</p>
+<p>最後補一句提醒（只在健康脈絡下講）：這套體系裡，你的月亮與木星帶有「健康關聯」的標記——意思是在它們主管的大運時段（例如很後面的月亮大運）要多留意身體保養，不是「一定出事」，只是「那些時段把體檢和作息看重一點」。整體而言，你的健康主軸是「<strong>規律作息＋別硬撐＋靜心練習</strong>」這三件事，做到了，你的身體其實很耐操。</p>
+<p>=== Step 4 板塊1–5 完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 11</div>
+    <h2>第五部分（續）：人生架構總結</h2>
+  </div>
+  <h1>十大人生板塊（下：教育・家庭・聲譽・靈性・賽道地圖）</h1>
+<hr />
+<h2>板塊6：教育／學習——適合學什麼</h2>
+<p>學習這件事，是你這張盤的<strong>天生強項</strong>，先給你這個定調。</p>
+<p>為什麼強？三個理由疊在一起。第一，<strong>你的命主星就是水星（代表：學習、思考、資訊）</strong>——你這個人本身就是為「學」而生的。第二，你的<strong>智力與才華宮（第5宮）住著木星（智慧、老師）和月亮（悟性）同宮，形成「象王格局」</strong>——這是一個專門加持「學習力、悟性、把知識和感受融會貫通」的組合。第三，你一大票星（命主星水星、靈魂星火星、最穩的土星）全部聚在<strong>第9宮（代表：高等教育、老師、遠方、更深的學問）</strong>——這等於你的人生重心天生就押在「往更高、更深的學問走」上面。</p>
+<p><strong>方向上：你非常適合深造、讀研、考取更高的專業資格，而且越往深、越專精，越是你的舞台。</strong> 你的第9宮裡有強大的土星（深耕、耐力）坐鎮——這代表你有能力「把一門學問鑽很久、鑽很深」，是那種可以做研究、能沉下去啃硬骨頭的人。這種人往往是「越學越值錢、大器晚成」的類型。你也適合跟「遠方、外地、跨域」有關的學習（例如出國進修、跨領域整合）。</p>
+<p><strong>學習風格上：你是「鑽研型＋需要好老師」的混合。</strong> 你的木星逆行代表你想得很深、很內化，適合「深度理解」而不是「填鴨背誦」；而第9宮是「老師與貴人」的宮——<strong>一個對的導師／師父，會讓你的學習效率翻好幾倍</strong>。所以建議你：別只自己埋頭苦讀，主動去找那個能點你的人。時間上，你的求學打底黃金期其實是剛過去的<strong>土星大運（2006–2025，正面期，推導依據：土星自廟＋落9宮＋同座加持）</strong>；而現在的水星大運（2025–2042）非常適合<strong>繼續進修、考證照、往更高的專業層級走</strong>——這 17 年不是停止學習的時候，反而是把學問變成專業本錢的時候。</p>
+<hr />
+<h2>板塊7：家庭／居住——安居樂業</h2>
+<p>先講你和「根」的關係。你的家庭宮（第4宮）管家是<strong>水星（也就是你自己、你的命主星）</strong>，它跑到了<strong>第9宮（遠方、高處、學問）</strong>——這給了一個很清楚的訊號：<strong>你的「安定感」和「家」，跟「往外走、往高處走、不斷學習」是綁在一起的。</strong> 你可能不是那種「守在原地就安心」的人，反而是<strong>在「移動、學習、甚至到外地／異鄉」的過程裡，才慢慢長出自己的定心點</strong>。加上你的計都落在第12宮（代表：海外、遠方、異地）——<strong>你和「在外地安家、或和遠方有緣」這條線的緣分不淺。</strong></p>
+<p>關於父母（這裡我只講「能量場的樣子」，你和他們實際相處的感受，永遠以你自己的真實體會為準）：你的<strong>父親象徵（太陽，你最強的星）坐鎮事業與地位宮、又回頭照看你的家</strong>——代表在你的家庭能量場裡，「父親／權威」這個角色的份量重、帶著一種「向上、要有成就」的色彩。你的<strong>母親象徵（木星，智慧之星）落在才華與智慧宮</strong>——代表母親的能量場偏「智慧型、有教養、跟學習有關」。這些是能量結構的參考，如果你有共鳴，它對應的就是盤面的這個結構；如果感覺不符，你的直接感受優先。</p>
+<p>搬遷與安定：因為家庭宮主往「遠方」跑、又有計都的海外線，<strong>你人生中「搬遷、移動、換環境」的傾向偏高</strong>，不太會一輩子釘在一個地方。至於「什麼時候真正定下來」——你的家產盤（D4）在出生時間上是邊界敏感的，所以我不對具體置產時機下定論；只能說這是一個「隨大運背景慢慢成形」的事，別急著用單一年份框它。你安家的地方，很可能帶有「舒適、有美感、跟你的專業或理想有關」的味道。</p>
+<hr />
+<h2>板塊8：社交／聲譽——別人怎麼看你</h2>
+<p>你在別人眼中的形象，是這張盤裡很討喜的一塊。</p>
+<p>你的「外在形象點」（AL，代表世人眼中的你）落在<strong>第5宮的天秤座，而且那裡住著月亮和木星</strong>。翻成人話：<strong>世人看你，會覺得你是一個「有才華、聰明、討喜、有創意、好相處、像個能給建議的人」。</strong> 天秤的色彩讓你顯得優雅、好溝通、懂得照顧關係；木星在旁邊讓你看起來有智慧、有教養、像個可以請教的對象；月亮讓你顯得親和、有人情味。這是一個很正向、很容易讓人喜歡與信任的公眾形象。</p>
+<p>更好的是：<strong>你的公眾形象和你真實的自己是「一致」的</strong>（你的形象點落在第5宮，和你的命宮之間沒有結構性的錯位）。這代表<strong>你不必演、不必裝——別人看到的那個聰明討喜的你，就是真的你。</strong> 這種「表裡一致」在社交上是很大的資產：你不會有那種「人設和真我打架」的內耗，你越做自己，別人越信你。</p>
+<p>你的名聲從哪來？從「才華、創意、專業、以及人脈」來。你的收入與人脈宮（第11宮）品質很好、住著你最強的金星——<strong>代表你在社群、朋友圈裡吃得開，容易累積「靠關係與口碑」的聲譽。</strong> 你適合的路線是：<strong>靠真本事和作品說話，靠討喜的人品經營關係</strong>，聲譽會自然滾起來。要留意的小地方只有一個：因為你重和諧、怕衝突（天秤月亮），偶爾可能為了維持表面和氣而不敢表態——記得，<strong>你的太陽夠強，該站出來表達立場的時候，站出來反而加分。</strong></p>
+<hr />
+<h2>板塊9：靈性／成長——靈魂課題</h2>
+<p>這一段，我想跟你講得深一點，因為它藏著你這輩子最核心的一條線。</p>
+<p>還記得前面說過，你的<strong>靈魂指北星是火星，它落在第9宮（意義、信仰、更高的學問、正道）</strong>嗎？把它跟你的上升星宿 Ardra（那股「打破砂鍋、對現狀永遠不太滿足」的鑽研勁）放在一起看，你會發現一件事：<strong>你這輩子內心深處，有一個永遠停不下來的「追問者」——他一直在問「這是為什麼」「還有沒有更高的答案」「我這樣活得有沒有道理」。</strong> 這股力量是你最大的推進器，但它也是你最容易痛苦的來源——因為<strong>如果你把這股「追問」用在外在的追逐上（永遠覺得還不夠、還要更多、還要更高），它會讓你一直不滿足、一直焦躁。</strong></p>
+<p>而你這張盤，剛好把答案也埋在裡面了。你的<strong>計都（代表：放下、抽離、靈性）落在第12宮</strong>——這是它的「回家」位，一條天生的靈性線。你和你的羅睺（在第6宮，代表入世的較勁與服務）形成了一條貫穿你一生的主軸：<strong>「該拚該爭的入世」 ↔ 「該放該退的出世」。</strong> 你這輩子會反覆在這兩端之間校準——什麼時候該全力以赴，什麼時候該鬆手放下。這條校準線，就是你的靈魂功課。</p>
+<p>最動人的一個細節在品質盤裡：你的靈魂之星火星，在 D9（內在品質盤）落在<strong>第4宮（內心的家、安定的根）</strong>，而且背後有你最強的金星撐著。這在告訴你一件事：<strong>你這一生辛苦追尋的那個「更高的答案」，最後的落點其實不在外面某座更高的山上，而在「內在的安定」裡。</strong> 你越是往外衝、往高處爬，越到某個時候會發現——<strong>真正讓你靈魂安頓的，是「回到內心那個安定的家」</strong>，是把追問的能量從「向外索取」轉成「向內沉澱、把一件有意義的事做深、學會適時放下」。這不是叫你不要奮鬥——你的太陽那麼強，你就是該去成就一番——而是說，<strong>當你在奮鬥的同時記得「往內安頓、適時放手」，你的人生後半段（尤其55歲後的金星大運）會走得又高又穩、又不焦躁。</strong> 這是你這張盤最深的一句話。</p>
+<hr />
+<h2>板塊10：賽道優勢地圖——你的先天加持在哪裡</h2>
+<p>把前面所有的線收攏，我幫你畫一張「你天生站在哪些賽道有加持、哪些需要後天經營、錢從哪來、什麼時候兌現」的地圖。</p>
+<p><strong>一、你有先天加持的賽道（格局命中）</strong>
+- <strong>求知・專業・研究・顧問賽道</strong>：你的命主星（水星）、靈魂星（火星）、最穩的土星全聚在第9宮（學問、高處），加上象王格局（學習力、悟性）——<strong>你在「靠專業與深度知識吃飯、當那個把複雜事情搞懂並解決的人」這條路上，有很強的先天加持。</strong> 越專精、越深，越是你的主場。
+- <strong>才華・創意・關係・審美賽道</strong>：你品質最好的金星（強＋同座加持）坐鎮才華與人脈線，第5宮又住著月亮＋木星——<strong>你在「靠創意、靠魅力、靠討喜的人與作品」發揮的這條路上，天生有料。</strong>
+- <strong>地位・影響力賽道</strong>：你有「王者格局」（才華接地位）加上全盤最強的太陽坐鎮事業宮——<strong>你有取得地位、被人看重、成為某個領域權威的通道</strong>；只是這條線偏「晚成、走窄門」，急不得。</p>
+<p><strong>二、需要後天經營的賽道</strong>
+- <strong>婚姻與合夥</strong>：方向與品質都好，但天生帶「延遲、好事多磨、要繞一下」的節奏——<strong>這塊要靠耐心經營，別早期硬求結果。</strong>
+- <strong>財務紀律</strong>：你很會賺（收入宮強），但錢庫管家月亮偏弱——<strong>「守」和「理」要靠制度補，別靠感覺。</strong></p>
+<p><strong>三、錢從哪條路來</strong>
+- <strong>主路</strong>：靠「專業＋表達＋魅力＋人脈」——你的收入宮住著強金星、才華宮的能量又流向收入宮，所以「把你的本事和討喜的特質變成收入」是你的正路。
+- <strong>暗線</strong>：靠「深度專業、處理別人搞不定的複雜／危機事務、管理他人資源」——你的第8宮由強土星掌管，這給了你一條「金融／研究／風險／危機處理／深度顧問」型的高含金量暗線。</p>
+<p><strong>四、兌現窗口時間表</strong>（整份報告唯一建議放表格的地方）</p>
+<table>
+<thead>
+<tr>
+<th>時期</th>
+<th>大運／小運</th>
+<th>主題與定調</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2006–2025（已過）</td>
+<td>土星大運</td>
+<td>求學、打底、養紀律（正面期，你今天的本錢在此打下）</td>
+</tr>
+<tr>
+<td>2025–2042（當前）</td>
+<td>水星大運</td>
+<td>你親自掌舵、專業化、往更高走（困難期＝自我磨練，主動權在你）</td>
+</tr>
+<tr>
+<td>2028-11～2031-09</td>
+<td>水星–金星小運</td>
+<td><strong>好窗口</strong>：才華/關係/合作跳板，困境中有轉機</td>
+</tr>
+<tr>
+<td>2031-09～2032-07</td>
+<td>水星–太陽小運</td>
+<td>事業露臉、被看見的轉機</td>
+</tr>
+<tr>
+<td>2037-07～2039-10</td>
+<td>水星–木星小運</td>
+<td><strong>婚姻/事業成熟窗口</strong>（走窄門，晚成而穩）</td>
+</tr>
+<tr>
+<td>2042–2049</td>
+<td>計都大運</td>
+<td>靈性、遠方、斷捨離的轉場期</td>
+</tr>
+<tr>
+<td>2049–2069</td>
+<td>金星大運</td>
+<td><strong>開花期</strong>：才華/關係/財富/地位全面兌現（正面期，長達20年）</td>
+</tr>
+<tr>
+<td>2059-08～2062-04</td>
+<td>金星–木星小運</td>
+<td><strong>王者格局全額激活高峰</strong>：地位與影響力的巔峰</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一句話收尾</strong>：你這張盤是「<strong>前期靠自己磨、後期開花</strong>」的長線型——你的先天資本（強太陽、強金星、穩土星、聚焦第9宮的求知線）非常扎實，弱點不在「有沒有料」，而在「前段的慢與磨」。<strong>耐得住、往內安頓、把專業做深、把關係慢慢養——你的後半場（尤其55歲後）會又高又穩。</strong></p>
+<p>=== Step 4 十大板塊全部完成 ===</p>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Section 12</div>
+    <h2>附錄：技術附錄</h2>
+  </div>
+  <h1>技術附錄</h1>
+<h2>Dasha 回顧速查表（後續所有時間節點以此為準）</h2>
+<blockquote>
+<p>判定依 KN Rao 體系硬約束：正面條件滿足≥2 且負面=0→正面期；正面&lt;2 且負面≥1→困難期；正面≥2 且負面≥1→混合期；正面=0 且負面≥2→危機期；其餘→平淡期。<strong>節點（羅睺／計都）另用節點專用子表，「大運星P1」填「—」、尊貴度填定位星狀態。</strong></p>
+</blockquote>
+<h3>大運（Mahadasha）背景層</h3>
+<table>
+<thead>
+<tr>
+<th>大運</th>
+<th>時段（歲數）</th>
+<th>大運星P1身份</th>
+<th>尊貴度</th>
+<th>落宮</th>
+<th>管宮</th>
+<th>正面條件</th>
+<th>負面條件</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>木星</td>
+<td>1990–2006（0–12）</td>
+<td>交易者</td>
+<td>死敵</td>
+<td>5宮</td>
+<td>7/10</td>
+<td>1（落5吉路）</td>
+<td>1（力量&lt;100）</td>
+<td><strong>困難期</strong></td>
+</tr>
+<tr>
+<td>土星</td>
+<td>2006–2025（12–31）</td>
+<td>盟友</td>
+<td>自廟</td>
+<td>9宮</td>
+<td>8/9</td>
+<td>4（盟友＋自廟＋落9＋同座加持）</td>
+<td>0</td>
+<td><strong>正面期</strong></td>
+</tr>
+<tr>
+<td>水星（當前）</td>
+<td>2025–2042（31–48）</td>
+<td>交易者（命主星）</td>
+<td>敵方</td>
+<td>9宮</td>
+<td>1/4</td>
+<td>1（落9吉路）</td>
+<td>2（力量98.7%&lt;100；緊貼火星&lt;5°）</td>
+<td><strong>困難期</strong>（自我磨練）</td>
+</tr>
+<tr>
+<td>計都（下一）</td>
+<td>2042–2049（48–55）</td>
+<td>—（節點）</td>
+<td>定位星金星入友＋強（138%）</td>
+<td>12宮</td>
+<td>—</td>
+<td>1（定位星強）</td>
+<td>1（落12凶路）</td>
+<td><strong>困難期／混合</strong>（金星後台軟化，靈性/遠方色彩）</td>
+</tr>
+<tr>
+<td>金星</td>
+<td>2049–2069（55–75）</td>
+<td>盟友</td>
+<td>友方＋同座加持</td>
+<td>11宮</td>
+<td>5/12</td>
+<td>4（盟友＋友方＋力量138%≥120＋同座加持）</td>
+<td>0</td>
+<td><strong>正面期</strong>（開花期）</td>
+</tr>
+<tr>
+<td>月亮</td>
+<td>2075–2085（81–91）</td>
+<td>交易者</td>
+<td>敵方</td>
+<td>5宮</td>
+<td>2</td>
+<td>1（落5吉路）</td>
+<td>1（力量93%&lt;100）</td>
+<td><strong>困難期</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>一句話人生弧線：<strong>童年有磨（木星）→ 求學打底扎實（土星，正面）→ 現在自我磨練、靠自己拚（水星，困難但主動權在你）→ 中段靈性/遠方轉場（計都）→ 55歲後真正開花（金星，正面，長20年）。</strong></p>
+</blockquote>
+<h3>當前水星大運 · 九段小運（Antardasha）階段層</h3>
+<table>
+<thead>
+<tr>
+<th>小運</th>
+<th>時段</th>
+<th>小運星</th>
+<th>大＋小運疊加</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>水星–水星</td>
+<td>2025-06～2027-11</td>
+<td>命主星（純水星）</td>
+<td>困難＋同性質</td>
+<td>自我專業推進，過程拚</td>
+</tr>
+<tr>
+<td>水星–計都</td>
+<td>2027-11～2028-11</td>
+<td>節點（金星後台強）</td>
+<td>困難＋抽離</td>
+<td>沉澱/靈性/斷捨離窗口</td>
+</tr>
+<tr>
+<td><strong>水星–金星</strong></td>
+<td><strong>2028-11～2031-09</strong></td>
+<td><strong>金星（品質最好＋格局參與星）</strong></td>
+<td><strong>困難＋小運正</strong></td>
+<td><strong>困境中有轉機（重要好窗口）</strong></td>
+</tr>
+<tr>
+<td>水星–太陽</td>
+<td>2031-09～2032-07</td>
+<td>太陽（最強王牌）</td>
+<td>困難＋小運強</td>
+<td>事業露臉/被看見的轉機</td>
+</tr>
+<tr>
+<td>水星–月亮</td>
+<td>2032-07～2033-12</td>
+<td>月亮（偏弱）</td>
+<td>困難＋小運弱</td>
+<td>好事多磨</td>
+</tr>
+<tr>
+<td>水星–火星</td>
+<td>2033-12～2034-12</td>
+<td>火星（靈魂指標）</td>
+<td>困難＋競爭</td>
+<td>拚勁足但易摩擦，留意健康火氣</td>
+</tr>
+<tr>
+<td>水星–羅睺</td>
+<td>2034-12～2037-07</td>
+<td>節點（放大）</td>
+<td>困難＋擴張</td>
+<td>跨域/非傳統突破窗口</td>
+</tr>
+<tr>
+<td><strong>水星–木星</strong></td>
+<td><strong>2037-07～2039-10</strong></td>
+<td><strong>木星（婚姻/事業宮主＋格局參與星）</strong></td>
+<td><strong>困難＋婚姻事業激活</strong></td>
+<td><strong>婚姻/事業成熟窗口（走窄門）</strong></td>
+</tr>
+<tr>
+<td>水星–土星</td>
+<td>2039-10～2042-06</td>
+<td>土星（最穩底盤）</td>
+<td>困難＋小運強</td>
+<td>穩定收尾/深耕的轉機</td>
+</tr>
+</tbody>
+</table>
+<h3>金星大運（開花期）· 小運分行（因被點名為黃金期，補列 AD）</h3>
+<table>
+<thead>
+<tr>
+<th>小運</th>
+<th>時段</th>
+<th>重點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>金星–金星</td>
+<td>2049-06～2052-10</td>
+<td>才華/關係/享受全面開花起點</td>
+</tr>
+<tr>
+<td>金星–太陽</td>
+<td>2052-10～2053-10</td>
+<td>地位、被看見</td>
+</tr>
+<tr>
+<td>金星–月亮</td>
+<td>2053-10～2055-06</td>
+<td>情感/家庭</td>
+</tr>
+<tr>
+<td>金星–火星</td>
+<td>2055-06～2056-08</td>
+<td>行動、拓展</td>
+</tr>
+<tr>
+<td>金星–羅睺</td>
+<td>2056-08～2059-08</td>
+<td>擴張、跨域</td>
+</tr>
+<tr>
+<td><strong>金星–木星</strong></td>
+<td><strong>2059-08～2062-04</strong></td>
+<td><strong>王者格局雙方全額激活（Venus×Jupiter），地位/影響力兌現高峰</strong></td>
+</tr>
+<tr>
+<td>金星–土星</td>
+<td>2062-04～2065-06</td>
+<td>穩固、長期成果</td>
+</tr>
+<tr>
+<td>金星–水星</td>
+<td>2065-06～2068-04</td>
+<td>智識、表達再收成</td>
+</tr>
+<tr>
+<td>金星–計都</td>
+<td>2068-04～2069-06</td>
+<td>收束、靈性</td>
+</tr>
+</tbody>
+</table>
+<h3>當前三級運（Pratyantardasha）· 月級</h3>
+<table>
+<thead>
+<tr>
+<th>三級運</th>
+<th>時段</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>水星–水星–月亮</td>
+<td>2026-06-30～2026-09-12</td>
+<td><strong>目前所在</strong>（2026-09-08 落此窗，即將轉入下一段）</td>
+</tr>
+<tr>
+<td>水星–水星–火星</td>
+<td>2026-09-12～2026-11-02</td>
+<td>短期拚勁/火氣升高，留意衝突與健康</td>
+</tr>
+<tr>
+<td>水星–水星–羅睺</td>
+<td>2026-11-02～2027-03-14</td>
+<td>短期擴張/非傳統機會</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>格局激活驗證（承諾 × 時機 × 品質 三層）</h2>
+<p><strong>1. 王者格局（Raja Yoga）——金星（才華）× 木星（婚姻事業）互看</strong>
+- 承諾（本命）：✅成立（品質分裂：金星意志端強、木星落地端慢）
+- 時機：金星當值＝2028-11～2031-09 小運、2049起金星大運；木星當值＝2037-07～2039-10 小運。<strong>全額激活高峰＝金星大運裡的金星–木星（2059-08～2062-04）</strong>，雙方同時當值。
+- 品質（D9）：金星同座加持（強）、木星回自己家自廟（強）——<strong>兩端在品質盤都過關</strong>，所以這個地位／影響力通道的「內裡兌現」其實不錯。
+- 結論：<strong>你的地位與影響力通道是真的、D9品質雙方都撐得住；意志端（金星）很強。兌現最強在55歲後的金星大運，尤其2059–2062；當前大運裡的金星小運（2028–2031）與木星小運（2037–2039）是提前預演的好窗口。</strong></p>
+<p><strong>2. 象王格局（Gajakesari）——木星＋月亮同第5宮</strong>
+- 承諾：✅成立（打折，兩星本命偏弱）
+- 時機：木星小運（2037–2039）、月亮小運（2032–2033）、月亮大運（2075後）。
+- 品質（D9）：木星端D9強（自廟）、月亮端一般（維持）＋滋養保護。
+- 結論：<strong>學習力、悟性、把智慧與情感結合的天賦是真的，木星端在品質盤撐著；效力中等，在木星／月亮的小運時點最明顯。</strong></p>
+<p><strong>3. 輔弼格局（Adhi Yoga，弱成立）——金星</strong>
+- 承諾：⚠️弱成立（夾雜凶星）
+- 品質：金星Vargottama強。
+- 結論：<strong>「受人輔佐、得力於旁人」的底子存在但不強，在金星時期（金星小運/大運）較明顯。</strong></p>
+<hr />
+<h2>P1–P12 參數全表</h2>
+<table>
+<thead>
+<tr>
+<th>行星</th>
+<th>P1角色</th>
+<th>P2健康</th>
+<th>P4掌宮SAV</th>
+<th>P5落宮路況</th>
+<th>P6落宮SAV</th>
+<th>P7尊貴</th>
+<th>P9力量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>太陽 Sun</td>
+<td>成長型競爭者（3宮主）＋PK</td>
+<td>正常（不燃燒/不逆行）</td>
+<td>3宮=34(溢出)</td>
+<td>10宮·吉路(主場Dig Bala)</td>
+<td>10宮=29</td>
+<td>中性</td>
+<td>201.6%（第1）</td>
+</tr>
+<tr>
+<td>月亮 Moon</td>
+<td>交易者（2宮主）＋AmK</td>
+<td>虧月/落滋養保護點</td>
+<td>2宮=27</td>
+<td>5宮·吉路</td>
+<td>5宮=25</td>
+<td>敵方</td>
+<td>93.0%（第7）</td>
+</tr>
+<tr>
+<td>火星 Mars</td>
+<td>成長型競爭者（11宮主兼6）＋AK</td>
+<td>老年度數（24°）/緊貼水星</td>
+<td>11宮=28、6宮=32</td>
+<td>9宮·吉路</td>
+<td>9宮=25</td>
+<td>敵方</td>
+<td>99.6%（第4）</td>
+</tr>
+<tr>
+<td>水星 Mercury</td>
+<td>命主星/交易者（1、4宮主）＋BK</td>
+<td>緊貼火星（3.9°）</td>
+<td>1宮=28、4宮=27</td>
+<td>9宮·吉路</td>
+<td>9宮=25</td>
+<td>敵方</td>
+<td>98.7%（第5）</td>
+</tr>
+<tr>
+<td>木星 Jupiter</td>
+<td>交易者（7、10宮主）＋MK</td>
+<td>逆行/落滋養保護點</td>
+<td>7宮=36(溢出)、10宮=29</td>
+<td>5宮·吉路</td>
+<td>5宮=25</td>
+<td>死敵</td>
+<td>93.8%（第6）</td>
+</tr>
+<tr>
+<td>金星 Venus</td>
+<td>盟友（5宮主兼12）＋DK</td>
+<td>同座加持(Vargottama)/嬰兒度數</td>
+<td>5宮=25、12宮=24</td>
+<td>11宮·吉路</td>
+<td>11宮=28</td>
+<td>友方</td>
+<td>138.5%（第2）</td>
+</tr>
+<tr>
+<td>土星 Saturn</td>
+<td>盟友（9宮主兼8）＋GK</td>
+<td>同座加持(Vargottama)/自廟</td>
+<td>9宮=25、8宮=22</td>
+<td>9宮·吉路</td>
+<td>9宮=25</td>
+<td>自廟</td>
+<td>115.2%（第3）</td>
+</tr>
+<tr>
+<td>羅睺 Rahu</td>
+<td>—（節點不掌宮）</td>
+<td>恆逆</td>
+<td>—</td>
+<td>6宮·凶路（戰將位）</td>
+<td>6宮=32</td>
+<td>定位星火星（弱）</td>
+<td>—（節點無力量）</td>
+</tr>
+<tr>
+<td>計都 Ketu</td>
+<td>—（節點不掌宮）</td>
+<td>恆逆</td>
+<td>—</td>
+<td>12宮·凶路（本命歸宿）</td>
+<td>12宮=24</td>
+<td>定位星金星（強）</td>
+<td>—（節點無力量）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ SAV 為輔助指標；正文只在極端值（&gt;32 或 &lt;20）時提及，此表為完整參考。極端值僅：3宮=34、7宮=36（皆溢出）。</p>
+</blockquote>
+<h2>分盤數據速覽</h2>
+<ul>
+<li><strong>D9（婚姻/內在品質盤，上升水瓶，穩定）</strong>：土星自廟＋同座加持落D9第1宮（兌現100%）；木星回自己家（雙魚自廟）落D9第2宮（表面弱內裡強）；金星同座加持落D9第3宮；太陽友方落D9第10宮。滋養保護：火星/木星/羅睺（Pushkara Navamsa）、月亮（Pushkara Bhaga）。</li>
+<li><strong>D10（事業盤，上升天蠍，⚠️邊界敏感）</strong>：太陽入旺落D10第6宮；水星（命主星）落D10第10宮；本命10宮主木星落D10第6宮。→ 專業/解難/競爭型事業，靠溝通智識登台。</li>
+<li><strong>D4（家產盤，上升射手，⚠️邊界敏感）</strong>：本命4宮主水星落D4第9宮（家與遠方/學問綁）；金星落D4第5宮。結論僅參考。</li>
+<li><strong>D5（權力盤，上升射手，穩定）</strong>：水星入自己家（雙子自廟）落D5第7宮——創造力/影響力有真材實料。</li>
+</ul>
+<h2>校驗報告（12 項，全數通過）</h2>
+<pre><code>1. SAV=337 ✅   2. BAV行常量 ✅   3. 行星完整性(10) ✅   4. 度數唯一性 ✅
+5. Ra-Ke差180° ✅   6. 逆行標記完整 ✅   6b. 燃燒檢測 ✅[無]   7. Ayanamsa一致 ✅(True Chitra)
+7c. 盈月/虧月：虧月(距日217.7°)   8. Nakshatra↔度數 ✅   9. Chara Karaka排序 ✅
+10. Vimsottari層級 ✅(MD=9/AD=81/PD=729 連續)   11. D9公式交叉 ✅   12. Ra-Ke分盤校驗 ✅
+</code></pre>
+<h2>Dasha 審計時間線（實際引用範圍）</h2>
+<ul>
+<li><strong>大運背景層（MD）</strong>：木星(0–12,困難)→土星(12–31,正面)→<strong>水星(31–48,當前,困難/自我磨練)</strong>→計都(48–55)→金星(55–75,正面/開花)→月亮(75–85)。</li>
+<li><strong>小運階段層（AD，正文實際引用）</strong>：水星大運九段（見上速查表）；重點好窗＝水星–金星(2028-11～2031-09)、水星–木星(2037-07～2039-10)。金星大運九段（開花期，重點＝金星–木星2059-08～2062-04）。</li>
+<li><strong>三級運月級層（PD，實際引用窗口）</strong>：當前＝水星–水星–月亮(2026-06-30～2026-09-12)，即將轉水星–水星–火星(2026-09-12～2026-11-02)。完整729段三級運保留於 structured_data.md，不在此重複。</li>
+<li><strong>第二時間系統（Chara Dasha）</strong>：當前 Pisces 座（2023-03-30～2028-03-29），可供未來事件窗口做雙系統交叉驗證。</li>
+<li><strong>當前過運</strong>：土星過運雙魚（照事業第10宮）、木星過運巨蟹——雙重過運激活第10宮（事業）；Sade Sati 未啟動。</li>
+</ul>
+</div><div class="footer-note">
+  本報告基於傳統吠陀占星方法（Parashari Jyotish | KN Rao School）。<br>
+  每項結論均有量化行星指標支撐。僅供自我反思與策略思考參考。<br>
+  &copy; Data-Driven Vedic Astrology</div></body></html>
